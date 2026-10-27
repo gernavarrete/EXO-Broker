@@ -1,0 +1,83 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Poliza",
+    "description": "API FedPat SandBox",
+    "termsOfService": "https://www.fedpat.com.ar/terminos",
+    "contact": {
+      "name": "API Support",
+      "url": "https://www.fedpat.com.ar/support",
+      "email": "soporte@fedpat.com.ar"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "2.1.1"
+  },
+  "servers": [
+    {
+      "url": "https://api-sandbox.fedpat.com.ar/v1",
+      "description": "API SandBox v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "JWT": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "paths": {
+    "/utiles/reportes/link/{numDocumento}/{patente}": {
+      "get": {
+        "tags": [
+          "Reportes"
+        ],
+        "operationId": "Obtiene el reporte de tarjeta de circulacion",
+        "parameters": [
+          {
+            "name": "numDocumento",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patente",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

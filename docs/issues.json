@@ -1,0 +1,371 @@
+{
+  "repo": "gernavarrete/EXO-Broker",
+  "labels": {
+    "setup": "6e7781",
+    "auth": "1f6feb",
+    "admin": "8250df",
+    "seguridad": "cf222e",
+    "integraciones": "bf8700",
+    "mercantil-andina": "0e8a16",
+    "federacion-patronal": "005cc5",
+    "cotizador": "fb8500",
+    "polizas": "1a7f37",
+    "comisiones": "d4a72c",
+    "dashboard": "54aeff",
+    "calidad": "6639ba",
+    "tramite": "e99695",
+    "prioridad:alta": "b60205",
+    "prioridad:media": "fbca04",
+    "prioridad:baja": "c2e0c6",
+    "fase-2": "ededed"
+  },
+  "milestones": [
+    [
+      "M0 · Fundaciones",
+      "Proyecto, base de datos, deploy y CI."
+    ],
+    [
+      "M1 · Acceso y usuarios",
+      "Login con Google, roles admin/productor, ABM de productores."
+    ],
+    [
+      "M2 · Configuración del bróker",
+      "Compañías, credenciales del bróker y % de retención por uso de matrícula."
+    ],
+    [
+      "M3 · Integraciones",
+      "Adapters Mercantil Andina y Federación Patronal."
+    ],
+    [
+      "M4 · Cotizador automotor",
+      "Cotización multi-compañía desde un solo portal."
+    ],
+    [
+      "M5 · Pólizas y comisiones",
+      "Cartera por productor, comisiones netas y liquidaciones."
+    ],
+    [
+      "M6 · Calidad y lanzamiento",
+      "Seguridad, tests, legales y salida a producción."
+    ]
+  ],
+  "issues": [
+    {
+      "milestone": 0,
+      "title": "[Setup] Inicializar proyecto Next.js + TypeScript + Tailwind + shadcn/ui",
+      "labels": [
+        "setup",
+        "prioridad:alta"
+      ],
+      "body": "## Objetivo\nBase del portal EXO-Broker.\n\n## Tareas\n- [ ] Next.js (App Router) + TypeScript estricto\n- [ ] Tailwind + shadcn/ui, tema con identidad EXO\n- [ ] ESLint + Prettier\n- [ ] Estructura: `app/(auth)`, `app/(portal)`, `app/admin`, `lib/insurers`, `lib/supabase`, `supabase/migrations`\n- [ ] `.env.example` documentado, `README.md` con cómo levantar el proyecto\n\n## Criterios de aceptación\n- `npm run dev` y `npm run build` funcionan sin errores"
+    },
+    {
+      "milestone": 0,
+      "title": "[Setup] Crear proyecto Supabase (sa-east-1) y flujo de migraciones",
+      "labels": [
+        "setup",
+        "prioridad:alta"
+      ],
+      "body": "## Tareas\n- [ ] Proyecto Supabase `exo-broker` en región São Paulo (latencia AR)\n- [ ] Supabase CLI: migraciones versionadas en `supabase/migrations`\n- [ ] Separar entornos: dev (sandbox de compañías) y prod\n- [ ] Generar tipos TypeScript de la base\n\n## Criterios de aceptación\n- Las migraciones se aplican desde el repo, no a mano en el dashboard"
+    },
+    {
+      "milestone": 0,
+      "title": "[Setup] Deploy en Vercel con previews por PR",
+      "labels": [
+        "setup",
+        "prioridad:media"
+      ],
+      "body": "## Tareas\n- [ ] Proyecto Vercel conectado a `main` (producción) y previews por PR\n- [ ] Variables de entorno por ambiente (Supabase URL/keys, secretos server-only)\n- [ ] Dominio (ej. `portal.exobroker.com.ar`) — a definir\n\n## Criterios de aceptación\n- Cada push a `main` despliega; cada PR genera URL de preview"
+    },
+    {
+      "milestone": 0,
+      "title": "[Setup] CI en GitHub Actions: lint, typecheck, tests y build",
+      "labels": [
+        "setup",
+        "calidad",
+        "prioridad:media"
+      ],
+      "body": "## Tareas\n- [ ] Workflow en PR: `lint`, `tsc --noEmit`, `test`, `build`\n- [ ] Protección de rama `main` (requiere CI verde)"
+    },
+    {
+      "milestone": 1,
+      "title": "[Auth] Login con cuenta de Google (Gmail)",
+      "labels": [
+        "auth",
+        "prioridad:alta"
+      ],
+      "body": "## Tareas\n- [ ] Crear OAuth Client en Google Cloud Console (pantalla de consentimiento, dominios autorizados)\n- [ ] Activar provider Google en Supabase Auth\n- [ ] Página `/login` con botón \"Ingresar con Google\", callback `/auth/callback`\n- [ ] Middleware que protege todas las rutas del portal; logout\n- [ ] Sesión SSR con `@supabase/ssr`\n\n## Criterios de aceptación\n- Un usuario no logueado no puede ver ninguna página interna\n- Login y logout funcionan en preview y producción"
+    },
+    {
+      "milestone": 1,
+      "title": "[Auth] Perfil de usuario con ID de productor único",
+      "labels": [
+        "auth",
+        "prioridad:alta"
+      ],
+      "body": "## Objetivo\nCada usuario tiene su identificador dentro del bróker.\n\n## Tareas\n- [ ] Tabla `profiles` (1:1 con `auth.users`): nombre, email, teléfono, CUIT/DNI, rol, estado, `producer_code` interno (ej. `EXO-0001`, secuencial)\n- [ ] Trigger que crea el perfil al primer login\n- [ ] Página \"Mi perfil\" para completar datos\n\n## Criterios de aceptación\n- Todo usuario tiene un `producer_code` único e inmutable"
+    },
+    {
+      "milestone": 1,
+      "title": "[Auth] Roles admin / productor y Row Level Security",
+      "labels": [
+        "auth",
+        "seguridad",
+        "prioridad:alta"
+      ],
+      "body": "## Reglas\n- **Admin** (dueño del bróker): ve y gestiona todo\n- **Productor**: ve solo sus pólizas, cotizaciones, clientes y comisiones\n\n## Tareas\n- [ ] Columna `role` en `profiles` + helper `is_admin()` en SQL\n- [ ] RLS en todas las tablas con políticas por `producer_id = auth.uid()` o admin\n- [ ] Protección de rutas `/admin/*` en middleware y server actions\n- [ ] Tests de RLS (un productor no puede leer datos de otro)\n\n## Criterios de aceptación\n- Advisors de seguridad de Supabase sin alertas de RLS"
+    },
+    {
+      "milestone": 1,
+      "title": "[Auth] Alta de productores por aprobación del admin",
+      "labels": [
+        "auth",
+        "admin",
+        "prioridad:alta"
+      ],
+      "body": "## Objetivo\nQue cualquiera con Gmail no pueda entrar y cotizar con la matrícula del bróker.\n\n## Tareas\n- [ ] Usuario nuevo queda en estado `pendiente` tras el primer login (pantalla \"Tu cuenta está en revisión\")\n- [ ] Opcional: invitación por email desde el admin (pre-aprobada)\n- [ ] Notificación al admin de nuevas solicitudes\n\n## Criterios de aceptación\n- Un usuario `pendiente` o `inactivo` no accede a cotizador, pólizas ni comisiones"
+    },
+    {
+      "milestone": 1,
+      "title": "[Admin] ABM de productores",
+      "labels": [
+        "admin",
+        "prioridad:alta"
+      ],
+      "body": "## Tareas\n- [ ] Listado de productores con estado, fecha de alta, cantidad de pólizas\n- [ ] Aprobar / suspender / reactivar\n- [ ] Editar datos: CUIT, condición fiscal, CBU/alias para pagos, teléfono\n- [ ] Ver detalle: pólizas, cotizaciones y comisiones del productor"
+    },
+    {
+      "milestone": 2,
+      "title": "[Admin] Configuración de compañías aseguradoras",
+      "labels": [
+        "admin",
+        "integraciones",
+        "prioridad:alta"
+      ],
+      "body": "## Tareas\n- [ ] Tabla `insurers`: nombre, slug, logo, activa (sí/no), ambiente (`sandbox`/`produccion`), ramos habilitados\n- [ ] Pantalla admin para activar/desactivar compañías sin tocar código\n- [ ] Semilla inicial: Mercantil Andina y Federación Patronal\n\n## Criterios de aceptación\n- Una compañía desactivada no aparece en el cotizador"
+    },
+    {
+      "milestone": 2,
+      "title": "[Seguridad] Credenciales del bróker (matrícula del dueño) cifradas y solo server-side",
+      "labels": [
+        "seguridad",
+        "admin",
+        "integraciones",
+        "prioridad:alta"
+      ],
+      "body": "## Contexto\nTodas las cotizaciones y consultas a las compañías se hacen **con las credenciales del productor dueño del bróker** (su código PAS / matrícula). Los productores nunca ven ni usan credenciales propias.\n\n## Tareas\n- [ ] Guardar credenciales cifradas (Supabase Vault o cifrado AES con clave en env):\n  - Mercantil Andina: `subscription key`, `client_id`, usuario, contraseña, código PAS\n  - Federación Patronal: `client_id`, `client_secret`, usuario, contraseña, código de productor\n- [ ] Pantalla admin para cargarlas/rotarlas (campos write-only: se ven enmascaradas)\n- [ ] Solo accesibles desde API routes / server actions; nunca enviadas al navegador\n- [ ] Botón \"Probar conexión\" por compañía (genera token y muestra OK/error)\n\n## Criterios de aceptación\n- Ninguna credencial aparece en el bundle del cliente ni en logs"
+    },
+    {
+      "milestone": 2,
+      "title": "[Comisiones] % de retención por uso de matrícula configurable desde el panel admin",
+      "labels": [
+        "comisiones",
+        "admin",
+        "prioridad:alta"
+      ],
+      "body": "## Contexto\nEl dueño del bróker cobra a cada productor un porcentaje sobre la comisión por trabajar con su matrícula (para cubrir impuestos). Los productores ven su comisión **ya neta** de ese descuento.\n\n## Tareas\n- [ ] Tabla `retention_rates`: porcentaje, `vigente_desde`, alcance (`global` o `producer_id`), creado por, fecha\n- [ ] Pantalla admin \"Retención por matrícula\":\n  - % global editable\n  - Override opcional por productor (ej. condición especial)\n  - Historial de cambios con quién y cuándo\n- [ ] Función que resuelve el % aplicable a una comisión según productor y fecha\n- [ ] Validaciones: entre 0 y 100, con hasta 2 decimales\n\n## Criterios de aceptación\n- El admin cambia el % desde la interfaz, sin deploy\n- Un cambio rige desde la fecha indicada y **no modifica liquidaciones ya cerradas** (se guarda el % aplicado en cada comisión)\n- El productor nunca ve el % ni el monto retenido si así se configura (definir: ¿mostrar desglose o solo neto?)"
+    },
+    {
+      "milestone": 3,
+      "title": "[Integraciones] Capa de adapters de aseguradoras",
+      "labels": [
+        "integraciones",
+        "prioridad:alta"
+      ],
+      "body": "## Objetivo\nUna interfaz común para sumar compañías nuevas sin tocar el cotizador.\n\n## Tareas\n- [ ] Interfaz `InsurerAdapter`: `getToken()`, `getVehicleCatalog()`, `quoteAuto(input)`, `issuePolicy()` (fase 2), `getPortfolio()`\n- [ ] Cache de tokens hasta `expires_in` (en memoria/DB)\n- [ ] Timeouts, reintentos y manejo de errores normalizado\n- [ ] Log de requests/responses (`insurer_api_logs`) sin datos sensibles\n- [ ] Modo mock para desarrollar sin credenciales\n\n## Criterios de aceptación\n- Agregar una tercera compañía = crear un adapter nuevo y registrarlo"
+    },
+    {
+      "milestone": 3,
+      "title": "[Mercantil Andina] Trámite de credenciales de test",
+      "labels": [
+        "mercantil-andina",
+        "tramite",
+        "prioridad:alta"
+      ],
+      "body": "## Checklist (según guía de Mercantil Andina)\n- [ ] Registrarse en https://apiportal.mercantilandina.com.ar/\n- [ ] Suscribirse a productos: **Autenticación**, **Automotores**, **Pólizas**, **Cartera** (y Webhook si se usa)\n- [ ] Copiar la *subscription key* desde \"Perfil\"\n- [ ] Enviar solicitud formal con:\n  - Código de PAS a vincular (el del dueño del bróker)\n  - Nombre del bróker, CUIT, email y teléfono\n  - Finalidad: aplicación para uso de PAS / bróker\n  - Uso: cotización de autos, emisión de autos, descarga y gestión de cartera\n- [ ] Recibir usuario y contraseña de test\n- [ ] Bajar la especificación (OpenAPI) de cada producto al repo en `docs/apis/mercantil/`"
+    },
+    {
+      "milestone": 3,
+      "title": "[Mercantil Andina] Adapter: token, vehículos y cotización auto",
+      "labels": [
+        "mercantil-andina",
+        "integraciones",
+        "prioridad:alta"
+      ],
+      "body": "## Autenticación (documentada)\n```\nPOST https://apidev.mercantilandina.com.ar/credenciales/v2/\nContent-Type: application/x-www-form-urlencoded\nOcp-Apim-Subscription-Key: <key>\nclient_id=api-clientes-login&username=<user>&password=<pass>&grant_type=password\n```\n\n## Tareas\n- [ ] Generar y cachear token\n- [ ] Endpoints de vehículos (marcas, modelos, años, versiones)\n- [ ] Cotización autos: mapear input normalizado → request Mercantil, response → coberturas normalizadas\n- [ ] Tests con respuestas grabadas (fixtures)\n\n## Dependencias\n- Trámite de credenciales de test y especificación de endpoints"
+    },
+    {
+      "milestone": 3,
+      "title": "[Federación Patronal] Trámite de credenciales sandbox y acceso a documentación",
+      "labels": [
+        "federacion-patronal",
+        "tramite",
+        "prioridad:alta"
+      ],
+      "body": "## Checklist\n- [ ] Solicitar a Federación Patronal `client_id`, `client_secret`, usuario y contraseña de sandbox vinculados al código de productor del bróker\n- [ ] Obtener documentación detallada de **Cotización**, **Vehículos** y **Producto** (las páginas de https://api-sandbox.fedpat.com.ar/servicios.html no muestran los endpoints públicamente)\n- [ ] Guardar especificación en `docs/apis/fedpat/`\n\n## Nota\nEmisión, Póliza, Cliente e Inspección figuran como \"Próximamente\" en su portal."
+    },
+    {
+      "milestone": 3,
+      "title": "[Federación Patronal] Adapter: OAuth2, vehículos, productos y cotizador",
+      "labels": [
+        "federacion-patronal",
+        "integraciones",
+        "prioridad:alta"
+      ],
+      "body": "## Autenticación (documentada)\n```\nPOST https://api-sandbox.fedpat.com.ar/oauth/token   (prod: https://api.fedpat.com.ar/oauth/token)\nContent-Type: application/x-www-form-urlencoded\nAuthorization: Basic base64(CLIENT_ID:CLIENT_SECRET)\ngrant_type=password&username=<user>&password=<pass>\n```\nRespuesta: `access_token`, `token_type`, `expires_in`, `scope`, `jti`. Uso: `Authorization: Bearer <token>`. Debe hacerse **solo server-side**.\n\n## Tareas\n- [ ] Token con cache según `expires_in`\n- [ ] Servicio Vehículos\n- [ ] Servicio Producto (coberturas, planes, opciones)\n- [ ] Servicio Cotización → normalizar respuesta\n- [ ] Tests con fixtures"
+    },
+    {
+      "milestone": 3,
+      "title": "[Integraciones] Normalización de vehículos y coberturas entre compañías",
+      "labels": [
+        "integraciones",
+        "cotizador",
+        "prioridad:media"
+      ],
+      "body": "## Tareas\n- [ ] Catálogo de vehículos unificado (código InfoAuto como clave común si ambas lo soportan)\n- [ ] Homologar coberturas: RC, Terceros completo (B / C / C+ según compañía), Todo riesgo con franquicia\n- [ ] Tabla de equivalencias editable por admin"
+    },
+    {
+      "milestone": 4,
+      "title": "[Cotizador] Formulario de cotización automotor",
+      "labels": [
+        "cotizador",
+        "prioridad:alta"
+      ],
+      "body": "## Campos\n- Vehículo: marca, modelo, año, versión (autocompletado), 0 km, GNC, uso (particular/comercial)\n- Asegurado: código postal / localidad, fecha de nacimiento, tipo de persona (física/jurídica), DNI/CUIT opcional\n- Vigencia y forma de pago\n\n## Tareas\n- [ ] Formulario con validación (zod) y buscador de vehículos\n- [ ] Guardar borrador"
+    },
+    {
+      "milestone": 4,
+      "title": "[Cotizador] Cotización simultánea en todas las compañías y comparativo",
+      "labels": [
+        "cotizador",
+        "prioridad:alta"
+      ],
+      "body": "## Tareas\n- [ ] Endpoint server que llama a todos los adapters activos en paralelo\n- [ ] Si una compañía falla o tarda, se muestran las demás con aviso\n- [ ] Tabla comparativa por cobertura: premio, cuota, suma asegurada, franquicia\n- [ ] Filtros y orden por precio\n- [ ] Rate limiting por usuario\n\n## Criterios de aceptación\n- Con 2 compañías activas, el resultado aparece en una sola pantalla"
+    },
+    {
+      "milestone": 4,
+      "title": "[Cotizador] Historial de cotizaciones y PDF para el cliente",
+      "labels": [
+        "cotizador",
+        "prioridad:media"
+      ],
+      "body": "## Tareas\n- [ ] Tablas `quotes` y `quote_results` asociadas al productor\n- [ ] Historial con búsqueda y re-cotizar\n- [ ] PDF / link compartible con marca EXO para enviar al cliente (WhatsApp/email)"
+    },
+    {
+      "milestone": 4,
+      "title": "[Emisión] Formulario de emisión dinámico por compañía",
+      "labels": [
+        "cotizador",
+        "integraciones",
+        "prioridad:alta"
+      ],
+      "body": "## Objetivo\nEmitir desde el mismo portal, a partir de la cotización elegida, cargando los campos que exige la API de cada compañía.\n\n## Tareas\n- [ ] Cada adapter expone un `emissionSchema` (campos, tipos, obligatorios, listas de valores) derivado de la documentación de su API\n- [ ] Formulario que se arma dinámicamente según la compañía y cobertura elegidas (datos del tomador/asegurado, domicilio, vehículo: patente, motor, chasis, color; forma de pago: CBU/tarjeta; beneficiario/acreedor prendario)\n- [ ] Precarga con los datos ya ingresados en la cotización y en el cliente existente\n- [ ] Validación client + server con el mismo schema (zod)\n- [ ] Guardar borrador de emisión para completar después\n\n## Criterios de aceptación\n- Un campo nuevo requerido por una compañía se agrega en su schema, sin tocar la pantalla"
+    },
+    {
+      "milestone": 4,
+      "title": "[Emisión] Envío de emisión a la compañía y alta automática en cartera",
+      "labels": [
+        "integraciones",
+        "polizas",
+        "prioridad:alta"
+      ],
+      "body": "## Tareas\n- [ ] Mercantil Andina: emisión de autos (producto Automotores)\n- [ ] Federación Patronal: servicio Emisión (figura \"Próximamente\" en su portal; dejar el adapter listo)\n- [ ] Manejo de respuestas: emitida, pendiente de inspección, rechazada (mostrar motivo)\n- [ ] Inspección / autoinspección (Mercantil Inspecciones: link de autoinspección, adjuntar fotos, estado)\n- [ ] Descarga de póliza / certificado de cobertura (PDF)\n- [ ] Al emitir, crear cliente y póliza en la cartera del productor que cotizó (queda asignada automáticamente)\n- [ ] Webhook de Mercantil de emisión de póliza para confirmar el estado"
+    },
+    {
+      "milestone": 5,
+      "title": "[Pólizas] Modelo de datos de clientes y pólizas",
+      "labels": [
+        "polizas",
+        "prioridad:alta"
+      ],
+      "body": "## Tablas\n- `clients`: tipo persona, nombre/razón social, DNI/CUIT, contacto, `producer_id`\n- `policies`: compañía, número, ramo, vehículo/bien, vigencia desde/hasta, prima, premio, estado (vigente, anulada, vencida, renovada), `producer_id`, origen (API / manual)\n\n## Criterios de aceptación\n- RLS: cada productor ve solo sus clientes y pólizas"
+    },
+    {
+      "milestone": 5,
+      "title": "[Pólizas] Sincronización de cartera desde las compañías + asignación a productores",
+      "labels": [
+        "polizas",
+        "integraciones",
+        "admin",
+        "prioridad:alta"
+      ],
+      "body": "## Contexto\nComo todas las pólizas salen con la matrícula del dueño, la compañía no sabe qué productor interno la vendió. Hay que asignarlas.\n\n## Tareas\n- [ ] Job programado que descarga cartera (Mercantil: Pólizas/Cartera; Fedpat: cuando esté disponible)\n- [ ] Asignación automática si la póliza nació de una cotización del portal\n- [ ] Bandeja admin \"Pólizas sin asignar\" para asignar productor manualmente\n- [ ] Importación CSV/Excel para carga manual\n- [ ] Webhook de Mercantil (emisión de póliza) como alternativa al job"
+    },
+    {
+      "milestone": 5,
+      "title": "[Comisiones] Cálculo de comisión por póliza: bruta → retención → neta",
+      "labels": [
+        "comisiones",
+        "prioridad:alta"
+      ],
+      "body": "## Regla\n```\ncomision_bruta   = la que paga la compañía por la póliza\nretencion        = comision_bruta × % de retención vigente (configurado por el admin)\ncomision_neta    = comision_bruta − retencion   ← lo que ve el productor\n```\n\n## Tareas\n- [ ] Tabla `commissions`: póliza, productor, período, bruta, `% aplicado` (snapshot), retención, neta, estado (pendiente / liquidada / pagada)\n- [ ] Origen de la comisión bruta: API de Cartera (Mercantil) o carga/import manual\n- [ ] Recalcular solo comisiones no liquidadas cuando cambia el %\n- [ ] Tests unitarios del cálculo (redondeo a 2 decimales)"
+    },
+    {
+      "milestone": 5,
+      "title": "[Comisiones] Vista del productor: mis pólizas y mis comisiones netas",
+      "labels": [
+        "comisiones",
+        "polizas",
+        "prioridad:alta"
+      ],
+      "body": "## Tareas\n- [ ] \"Mis pólizas\": listado con filtros (compañía, estado, vencimiento), detalle por póliza\n- [ ] \"Mis comisiones\": comisión **neta** por póliza, totales por mes y compañía\n- [ ] Exportar a Excel\n- [ ] Alertas de vencimientos/renovaciones próximas"
+    },
+    {
+      "milestone": 5,
+      "title": "[Comisiones] Panel admin de liquidaciones",
+      "labels": [
+        "comisiones",
+        "admin",
+        "prioridad:media"
+      ],
+      "body": "## Tareas\n- [ ] Resumen mensual por productor: bruta, retención, neta\n- [ ] Total retenido por el bróker en el período (para impuestos)\n- [ ] Cerrar período (congela montos y % aplicado)\n- [ ] Marcar como pagado con fecha y comprobante\n- [ ] Export Excel / PDF de liquidación por productor"
+    },
+    {
+      "milestone": 5,
+      "title": "[Dashboard] Inicio del productor y del admin",
+      "labels": [
+        "dashboard",
+        "prioridad:media"
+      ],
+      "body": "## Productor\n- Pólizas vigentes, cotizaciones del mes, comisión neta del mes, próximos vencimientos\n\n## Admin\n- Producción por productor y compañía, retención acumulada, pólizas sin asignar, solicitudes de alta pendientes"
+    },
+    {
+      "milestone": 6,
+      "title": "[Seguridad] Auditoría y endurecimiento",
+      "labels": [
+        "seguridad",
+        "calidad",
+        "prioridad:media"
+      ],
+      "body": "## Tareas\n- [ ] `audit_log`: cambios de %, credenciales, roles, asignación de pólizas, liquidaciones\n- [ ] Rate limiting en endpoints de cotización\n- [ ] Revisar advisors de seguridad y performance de Supabase\n- [ ] Headers de seguridad (CSP) en Next.js"
+    },
+    {
+      "milestone": 6,
+      "title": "[Calidad] Tests unitarios, de integración y e2e",
+      "labels": [
+        "calidad",
+        "prioridad:media"
+      ],
+      "body": "## Tareas\n- [ ] Unit: cálculo de comisiones y resolución del % vigente\n- [ ] Integración: adapters con fixtures\n- [ ] e2e (Playwright): login → cotizar → ver resultado; productor no ve datos de otro"
+    },
+    {
+      "milestone": 6,
+      "title": "[Legal] Términos, privacidad y uso de matrícula",
+      "labels": [
+        "calidad",
+        "prioridad:baja"
+      ],
+      "body": "## Tareas\n- [ ] Política de privacidad (Ley 25.326 de Protección de Datos Personales)\n- [ ] Términos de uso del portal para productores, incluyendo condiciones del uso de la matrícula y la retención\n- [ ] Revisar con contador/abogado"
+    },
+    {
+      "milestone": 6,
+      "title": "[Lanzamiento] Pase a producción con compañías",
+      "labels": [
+        "setup",
+        "integraciones",
+        "prioridad:media"
+      ],
+      "body": "## Tareas\n- [ ] Homologación con Mercantil Andina y Federación Patronal (si la exigen)\n- [ ] Credenciales productivas cargadas desde el panel admin\n- [ ] Cambio de ambiente `sandbox` → `produccion` por compañía\n- [ ] Prueba piloto con 1–2 productores"
+    }
+  ]
+}

@@ -1,0 +1,1082 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Emision",
+    "description": "API FedPat SandBox",
+    "termsOfService": "https://www.fedpat.com.ar/terminos",
+    "contact": {
+      "name": "API Support",
+      "url": "https://www.fedpat.com.ar/support",
+      "email": "soporte@fedpat.com.ar"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "2.1.1"
+  },
+  "servers": [
+    {
+      "url": "https://api-sandbox.fedpat.com.ar/v1",
+      "description": "API SandBox v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "JWT": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "paths": {
+    "/acreedores": {
+      "get": {
+        "tags": [
+          "Emision automotores"
+        ],
+        "summary": "Obtiene los acreedores que se pueden agregar al momento de emitir automotores",
+        "operationId": "obtenerAcreedores",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "codigo_acreedor": {
+                        "type": "string"
+                      },
+                      "nombre_acreedor": {
+                        "type": "string"
+                      },
+                      "domicilio": {
+                        "type": "object",
+                        "properties": {
+                          "direccion": {
+                            "type": "string"
+                          },
+                          "localidad": {
+                            "type": "string"
+                          },
+                          "provincia": {
+                            "type": "string"
+                          },
+                          "codigo_postal": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/emision-automotores/{cotizacion}": {
+      "post": {
+        "tags": [
+          "Emision automotores"
+        ],
+        "summary": "Emisión de póliza de automotores.",
+        "operationId": "emitirAutomotores",
+        "parameters": [
+          {
+            "name": "cotizacion",
+            "in": "path",
+            "description": "Número de cotización a emitir",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "vehiculo"
+                ],
+                "type": "object",
+                "properties": {
+                  "vehiculo": {
+                    "required": [
+                      "chasis",
+                      "destino",
+                      "motor",
+                      "patente"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "patente": {
+                        "type": "string",
+                        "description": "Número de DOMINIO o PATENTE del vehículo.",
+                        "example": "XXX000"
+                      },
+                      "destino": {
+                        "type": "string",
+                        "description": "Código que representa el DESTINO del vehículo. \nLos valores permitidos son:\n* (1) PARTICULAR\n* (8) ESCOLAR Y SERV. ESPECIAL\n* (9) TRANSPORTE DE BIENES\n* (18) CARGAS PELIGROSAS\n* (19) SERVICIO ESPECIAL TRANSPORTE DE PASAJEROS\n* (21) COMERCIAL\n",
+                        "example": "1",
+                        "enum": [
+                          "1",
+                          "8",
+                          "9",
+                          "18",
+                          "19",
+                          "21"
+                        ]
+                      },
+                      "motor": {
+                        "maxLength": 25,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Número de MOTOR del vehículo.",
+                        "example": "AAAA1111SSS222"
+                      },
+                      "chasis": {
+                        "maxLength": 17,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Número de CHASIS del vehículo.",
+                        "example": "BBXSBB111F1SSS222"
+                      },
+                      "ruta": {
+                        "type": "string",
+                        "description": "Número de RUTA. Se deberá completar si el vehículo lo requiere.",
+                        "example": "00000000000"
+                      },
+                      "riesgo": {
+                        "type": "string",
+                        "description": "Detalle del RIESGO. Se deberá completar si el vehículo lo requiere.",
+                        "example": "Mercedes Benz 190D"
+                      },
+                      "cerokm": {
+                        "type": "boolean",
+                        "description": "Indica si el vehículo es 0KM",
+                        "example": false
+                      }
+                    }
+                  },
+                  "fotos": {
+                    "type": "array",
+                    "description": "Fotos",
+                    "items": {
+                      "required": [
+                        "foto"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "foto": {
+                          "type": "string"
+                        },
+                        "nro_foto": {
+                          "type": "integer",
+                          "format": "int32",
+                          "readOnly": true
+                        },
+                        "nombre": {
+                          "type": "string",
+                          "readOnly": true
+                        }
+                      },
+                      "description": "Fotos"
+                    }
+                  },
+                  "medio_pago": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "Identificador del medio de pago.",
+                        "format": "int32"
+                      }
+                    },
+                    "description": "Medio de pago."
+                  },
+                  "contratante": {
+                    "type": "object",
+                    "properties": {
+                      "matricula": {
+                        "type": "string",
+                        "description": "Identificación de un cliente existente dentro de Federación Patronal Seguros S.A.",
+                        "example": "1125554"
+                      }
+                    },
+                    "description": "Datos del contratante de la póliza (enviar en caso de no haber cotizado con un matriculado)"
+                  },
+                  "codigo_acreedor": {
+                    "type": "integer",
+                    "description": "Codigo del acreedor prendario",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Operacion exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sucursal": {
+                      "type": "integer",
+                      "format": "int32",
+                      "readOnly": true
+                    },
+                    "cotizacion": {
+                      "type": "integer",
+                      "format": "int64",
+                      "readOnly": true
+                    },
+                    "consecutivo": {
+                      "type": "integer",
+                      "format": "int32",
+                      "readOnly": true
+                    },
+                    "ramo": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "poliza": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "certificado": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "productor": {
+                      "type": "integer",
+                      "format": "int32"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas, el token ingresado no es correcto",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso restringido, no se poseen los permisos para acceder al recurso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error inesperado al realizar la operación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/emision-otros-ramos/{cotizacion}": {
+      "post": {
+        "tags": [
+          "Emisión otros ramos"
+        ],
+        "summary": "Emisión de póliza de otros ramos.",
+        "operationId": "cotizarPorApi",
+        "parameters": [
+          {
+            "name": "cotizacion",
+            "in": "path",
+            "description": "Número de cotización a emitir",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "contratante",
+                  "medio_pago"
+                ],
+                "type": "object",
+                "properties": {
+                  "bienes": {
+                    "type": "array",
+                    "description": "Coleccion de datos y coberturas de bienes asociado a la cotizacion",
+                    "nullable": true,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "codigo_bien": {
+                          "type": "integer",
+                          "description": "Código que representa el bien a aplicar en la cotización realizada",
+                          "format": "int32",
+                          "externalDocs": {
+                            "description": "Los códigos existentes pueden encontrarse aquí",
+                            "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getBienes"
+                          }
+                        },
+                        "datos": {
+                          "type": "array",
+                          "description": "Colección de Datos que pueden aplicar en la cotización realizada",
+                          "externalDocs": {
+                            "description": "Los datos existentes pueden encontrarse aquí",
+                            "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getDatosParametricosPoliza"
+                          },
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "codigo": {
+                                "type": "integer",
+                                "description": "Codigo del dato",
+                                "format": "int32"
+                              },
+                              "valor": {
+                                "type": "string",
+                                "description": "Valor del dato",
+                                "nullable": true,
+                                "externalDocs": {
+                                  "description": "Los valores posibles pueden encontrarse aquí",
+                                  "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getOpciones_1"
+                                }
+                              }
+                            },
+                            "description": "Colección de Datos que pueden aplicar en la cotización realizada",
+                            "externalDocs": {
+                              "description": "Los datos existentes pueden encontrarse aquí",
+                              "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getDatosParametricosPoliza"
+                            }
+                          }
+                        }
+                      },
+                      "description": "Coleccion de datos y coberturas de bienes asociado a la cotizacion",
+                      "nullable": true
+                    }
+                  },
+                  "fotos": {
+                    "type": "array",
+                    "description": "Fotos",
+                    "nullable": true,
+                    "items": {
+                      "required": [
+                        "foto"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "foto": {
+                          "type": "string"
+                        },
+                        "nro_foto": {
+                          "type": "integer",
+                          "format": "int32",
+                          "readOnly": true
+                        },
+                        "nombre": {
+                          "type": "string",
+                          "readOnly": true
+                        }
+                      },
+                      "description": "Fotos"
+                    }
+                  },
+                  "medio_pago": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "Identificador del medio de pago.",
+                        "format": "int32"
+                      }
+                    },
+                    "description": "Medio de pago."
+                  },
+                  "contratante": {
+                    "type": "object",
+                    "properties": {
+                      "matricula": {
+                        "type": "string",
+                        "description": "Identificación de un cliente existente dentro de Federación Patronal Seguros",
+                        "example": "1125554"
+                      }
+                    },
+                    "description": "Datos del contratante de la póliza (enviar en caso de no haber cotizado con un matriculado)"
+                  },
+                  "asegurado": {
+                    "type": "object",
+                    "properties": {
+                      "tipo_matricula": {
+                        "type": "string",
+                        "description": "Identificación de un tipo cliente existente dentro de Federación Patronal Seguros",
+                        "enum": [
+                          "M",
+                          "P"
+                        ]
+                      },
+                      "numero_matricula": {
+                        "type": "string",
+                        "description": "Identificación de un cliente existente dentro de Federación Patronal Seguros"
+                      }
+                    },
+                    "description": "Datos del asegurado de la póliza (enviar en caso de que el contratante sea distinto a la persona a asegurar)",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Operacion exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sucursal": {
+                      "type": "integer",
+                      "format": "int32",
+                      "readOnly": true
+                    },
+                    "cotizacion": {
+                      "type": "integer",
+                      "format": "int64",
+                      "readOnly": true
+                    },
+                    "consecutivo": {
+                      "type": "integer",
+                      "format": "int32",
+                      "readOnly": true
+                    },
+                    "ramo": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "poliza": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "certificado": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "productor": {
+                      "type": "integer",
+                      "format": "int32"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas, el token ingresado no es correcto",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso restringido, no se poseen los permisos para acceder al recurso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error inesperado al realizar la operación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/poliza/{sucursal}/{ramo}/{poliza}/{certificado}/{endoso}/reporte/poliza": {
+      "get": {
+        "tags": [
+          "Emision automotores"
+        ],
+        "summary": "Obtiene el reporte de impresión de póliza",
+        "operationId": "getReportePoliza_endoso",
+        "parameters": [
+          {
+            "name": "sucursal",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ramo",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "poliza",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "certificado",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "endoso",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nombreReporte": {
+                      "type": "string"
+                    },
+                    "descripcion": {
+                      "type": "string"
+                    },
+                    "desname": {
+                      "type": "string"
+                    },
+                    "formato": {
+                      "type": "string"
+                    },
+                    "destType": {
+                      "type": "string",
+                      "enum": [
+                        "CACHE",
+                        "FILE",
+                        "DBBLOB"
+                      ]
+                    },
+                    "desFormat": {
+                      "type": "string",
+                      "enum": [
+                        "PDF",
+                        "HTML"
+                      ]
+                    },
+                    "reporte": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "byte"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/poliza/{sucursal}/{ramo}/{poliza}/{certificado}/reporte/poliza": {
+      "get": {
+        "tags": [
+          "Emision automotores"
+        ],
+        "summary": "Obtiene el reporte de impresión de póliza",
+        "operationId": "getReportePoliza_1",
+        "parameters": [
+          {
+            "name": "sucursal",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ramo",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "poliza",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "certificado",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nombreReporte": {
+                      "type": "string"
+                    },
+                    "descripcion": {
+                      "type": "string"
+                    },
+                    "desname": {
+                      "type": "string"
+                    },
+                    "formato": {
+                      "type": "string"
+                    },
+                    "destType": {
+                      "type": "string",
+                      "enum": [
+                        "CACHE",
+                        "FILE",
+                        "DBBLOB"
+                      ]
+                    },
+                    "desFormat": {
+                      "type": "string",
+                      "enum": [
+                        "PDF",
+                        "HTML"
+                      ]
+                    },
+                    "reporte": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "byte"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/poliza/{sucursal}/{ramo}/{poliza}/{certificado}/reporte/certificado-cobertura": {
+      "get": {
+        "tags": [
+          "Emision automotores"
+        ],
+        "summary": "Obtiene el reporte del certificado de cobertura para pólizas de automotor y OR que no son de vida",
+        "operationId": "getCertificadoCobertura",
+        "parameters": [
+          {
+            "name": "sucursal",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ramo",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "poliza",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "certificado",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nombreReporte": {
+                      "type": "string"
+                    },
+                    "descripcion": {
+                      "type": "string"
+                    },
+                    "desname": {
+                      "type": "string"
+                    },
+                    "formato": {
+                      "type": "string"
+                    },
+                    "destType": {
+                      "type": "string",
+                      "enum": [
+                        "CACHE",
+                        "FILE",
+                        "DBBLOB"
+                      ]
+                    },
+                    "desFormat": {
+                      "type": "string",
+                      "enum": [
+                        "PDF",
+                        "HTML"
+                      ]
+                    },
+                    "reporte": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "byte"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/poliza/{sucursal}/{ramo}/{poliza}/{certificado}/reporte/tarjeta-seguro-obligatorio": {
+      "get": {
+        "tags": [
+          "Emision automotores"
+        ],
+        "summary": "Obtiene la tarjeta de seguro obligatorio de la póliza",
+        "operationId": "getTarjetaSeguroObligatorio",
+        "parameters": [
+          {
+            "name": "sucursal",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ramo",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "poliza",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "certificado",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nombreReporte": {
+                      "type": "string"
+                    },
+                    "descripcion": {
+                      "type": "string"
+                    },
+                    "desname": {
+                      "type": "string"
+                    },
+                    "formato": {
+                      "type": "string"
+                    },
+                    "destType": {
+                      "type": "string",
+                      "enum": [
+                        "CACHE",
+                        "FILE",
+                        "DBBLOB"
+                      ]
+                    },
+                    "desFormat": {
+                      "type": "string",
+                      "enum": [
+                        "PDF",
+                        "HTML"
+                      ]
+                    },
+                    "reporte": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "byte"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  }
+}

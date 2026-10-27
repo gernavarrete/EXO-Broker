@@ -1,0 +1,322 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Vehiculos",
+    "description": "API FedPat SandBox",
+    "termsOfService": "https://www.fedpat.com.ar/terminos",
+    "contact": {
+      "name": "API Support",
+      "url": "https://www.fedpat.com.ar/support",
+      "email": "soporte@fedpat.com.ar"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "2.1.1"
+  },
+  "servers": [
+    {
+      "url": "https://api-sandbox.fedpat.com.ar/v1",
+      "description": "API SandBox v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "JWT": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "paths": {
+    "/vehiculos/vehiculo/{codInfoAuto}/alarma-fabrica": {
+      "get": {
+        "tags": [
+          "vehiculos-rest"
+        ],
+        "summary": "Alarma de Fábrica",
+        "operationId": "findAlarmaFabricaUsingGET",
+        "parameters": [
+          {
+            "name": "codInfoAuto",
+            "in": "path",
+            "description": "codInfoAuto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Alarma",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehiculos/vehiculo/{codInfoAuto}/franquicia-vigente/{fecha}": {
+      "get": {
+        "tags": [
+          "vehiculos-rest"
+        ],
+        "summary": "Franquicias",
+        "description": "Devuelve las franquicias asociadas a 'codInfoAuto'",
+        "operationId": "findFranquiciaVigenteByFechaUsingGET",
+        "parameters": [
+          {
+            "name": "codInfoAuto",
+            "in": "path",
+            "description": "codInfoAuto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fecha",
+            "in": "path",
+            "description": "dd-MM-yyyy",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tipoVehiculo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Franquicias",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "codigo": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "descripcion": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehiculos/vehiculo/{codInfoAuto}/grua/{anio}": {
+      "get": {
+        "tags": [
+          "vehiculos-rest"
+        ],
+        "summary": "Servicio grua",
+        "operationId": "findServicioGruaUsingGET",
+        "parameters": [
+          {
+            "name": "codInfoAuto",
+            "in": "path",
+            "description": "codInfoAuto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "anio",
+            "in": "path",
+            "description": "anio",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tipoVehiculo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grua",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehiculos/vehiculo/{codInfoAuto}/tipos": {
+      "get": {
+        "tags": [
+          "vehiculos-rest"
+        ],
+        "summary": "Tipo de Vehículo",
+        "operationId": "findTipoVehiculoUsingGET",
+        "parameters": [
+          {
+            "name": "codInfoAuto",
+            "in": "path",
+            "description": "codInfoAuto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipos Vehiculo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehiculos/vehiculo/{codInfoAuto}/{localidad}/tipos": {
+      "get": {
+        "tags": [
+          "vehiculos-rest"
+        ],
+        "summary": "Tipo de Vehículo",
+        "operationId": "findTiposVehiculosUsingGET_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "infoauto",
+            "in": "path",
+            "description": "infoauto",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "localidad",
+            "in": "path",
+            "description": "localidad",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipos Vehiculo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "codigo": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "descripcion": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehiculos/vehiculo/accesorios/{ramo}/list": {
+      "get": {
+        "tags": [
+          "vehiculos-rest"
+        ],
+        "summary": "Obtiene los accesorios para los ramos 4 (Automotores) y 44 (Motovehiculos)",
+        "operationId": "getAccesorios",
+        "parameters": [
+          {
+            "name": "ramo",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "codigo": {
+                        "type": "string"
+                      },
+                      "descripcion_accesorio": {
+                        "type": "string"
+                      },
+                      "suma_asegurada": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  }
+}

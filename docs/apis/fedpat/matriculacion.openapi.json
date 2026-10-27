@@ -1,0 +1,1332 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Clientes",
+    "description": "API FedPat SandBox",
+    "termsOfService": "https://www.fedpat.com.ar/terminos",
+    "contact": {
+      "name": "API Support",
+      "url": "https://www.fedpat.com.ar/support",
+      "email": "soporte@fedpat.com.ar"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "2.1.1"
+  },
+  "servers": [
+    {
+      "url": "https://api-sandbox.fedpat.com.ar/v1",
+      "description": "API SandBox v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "JWT": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "paths": {
+    "/clientes": {
+      "post": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Alta de cliente",
+        "operationId": "insertarClienteUsingPOST_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "domicilio",
+                  "email",
+                  "telefono"
+                ],
+                "type": "object",
+                "properties": {
+                  "nombre": {
+                    "type": "string",
+                    "description": "Nombre del cliente. (solo requerido en razon social igual a 21)",
+                    "nullable": true,
+                    "example": "Maria"
+                  },
+                  "apellido": {
+                    "type": "string",
+                    "description": "Apellido del cliente. (solo requerido en razon social igual a 21)",
+                    "nullable": true,
+                    "example": "Perez"
+                  },
+                  "tipo_documento": {
+                    "type": "string",
+                    "description": "Tipo de documento del cliente. (solo requerido en razon social igual a 21)",
+                    "nullable": true,
+                    "example": "DNI",
+                    "enum": [
+                      "DNI",
+                      "PA"
+                    ]
+                  },
+                  "numero_documento": {
+                    "type": "integer",
+                    "description": "Número de documento del cliente. (solo requerido en razon social igual a 21)",
+                    "format": "int32",
+                    "nullable": true,
+                    "example": 34769948
+                  },
+                  "cuit": {
+                    "type": "string",
+                    "description": "Numero de Cuit del cliente. (solo requerido en razon social distinta a 21)",
+                    "nullable": true,
+                    "example": "20347699484"
+                  },
+                  "razon_social": {
+                    "type": "string",
+                    "description": "Número de razon social del cliente. \nLos valores permitidos son:\n* (1) SOCIEDAD ANONIMA\n* (2) SOC. DE RESP. LIMITADA\n* (3) SOCIEDAD COLECTIVA\n* (4) OTRAS SOC. LEGALES\n* (5) SOC. DE HECHO\n* (6) CONSORCIO DE PROPIETARIOS\n* (7) BANCO\n* (8) HOSPITAL\n* (9) GOBIERNO NACIONAL\n* (10) GOBIERNO PROVINCIAL\n* (11) GOBIERNO MUNICIPAL\n* (12) COLEGIO PROFESIONAL\n* (13) ESCUELA\n* (14) COOPERATIVA\n* (15) ENTIDAD DE BIEN PUBLICO\n* (17) SOC. O ASOC. CIVIL Y SIND.\n* (18) CLUB\n* (19) SUCESION\n* (21) PERSONA FISICA\n* (22) CONSORCIO NO CONSTITUIDO",
+                    "nullable": true,
+                    "example": "21",
+                    "enum": [
+                      "1",
+                      "2",
+                      "3",
+                      "4",
+                      "5",
+                      "6",
+                      "7",
+                      "8",
+                      "9",
+                      "10",
+                      "11",
+                      "12",
+                      "13",
+                      "14",
+                      "15",
+                      "17",
+                      "18",
+                      "19",
+                      "21",
+                      "22"
+                    ]
+                  },
+                  "razon": {
+                    "type": "string",
+                    "description": "Nombre de la razón social del cliente. (solo requerido en razon social distinta a 21)",
+                    "nullable": true,
+                    "example": "EMPRESA S.A"
+                  },
+                  "actividad_principal": {
+                    "type": "integer",
+                    "description": "Actividad principal del cliente. Los códigos válidos son los de las actividades segun ARCA.",
+                    "format": "int32",
+                    "nullable": true,
+                    "example": 40033
+                  },
+                  "sexo": {
+                    "type": "string",
+                    "description": "Código que representa el sexo del cliente. (solo requerido en razon social igual a 21) \nLos valores permitidos son:\n* (F) FEMENINO\n* (M) MASCULINO",
+                    "nullable": true,
+                    "example": "F",
+                    "enum": [
+                      "F",
+                      "M"
+                    ]
+                  },
+                  "nacionalidad": {
+                    "type": "string",
+                    "description": "Código que representa la nacionalidad del cliente. (solo requerido en razon social igual a 21)\nLos valores permitidos son:\n* (2) ARGENTINA\n* (4) BOLIVIA\n* (5) BRASIL\n* (7) COLOMBIA\n* (10) CHILE\n* (11) ECUADOR\n* (18) PARAGUAY\n* (19) PERU\n* (24) URUGUAY\n* (25) VENEZUELA\n* (999) OTRO",
+                    "nullable": true,
+                    "example": "2",
+                    "enum": [
+                      "2",
+                      "4",
+                      "5",
+                      "7",
+                      "10",
+                      "11",
+                      "18",
+                      "19",
+                      "24",
+                      "25",
+                      "999"
+                    ]
+                  },
+                  "fecha_nacimiento": {
+                    "type": "string",
+                    "description": "Fecha de nacimiento del cliente (solo requerido en razon social igual a 21)",
+                    "format": "date-time",
+                    "nullable": true,
+                    "example": "1992-11-22T00:00:00Z"
+                  },
+                  "condicion_iva": {
+                    "type": "string",
+                    "description": "Condicion de iva del cliente. \nLos valores permitidos son:\n* (IN) INSCRIPTO\n* (CF) CONSUMIDOR FINAL\n* (EA) EXENTO ACTIVIDAD\n* (IR) INSCRIPTO (R.18/97)\n* (ED) EXENTO DECRETO\n* (MO) MONOTRIBUTO\n* (NC) NO CATEGORIZADO\n* (NA) NO ALCANZADO\n",
+                    "nullable": true,
+                    "example": "CF",
+                    "enum": [
+                      "IN",
+                      "CF",
+                      "EA",
+                      "IR",
+                      "ED",
+                      "MO",
+                      "NC",
+                      "NA"
+                    ]
+                  },
+                  "localidad_nacimiento": {
+                    "type": "string",
+                    "description": "Código que representa la localidad de nacimiento del cliente. Los códigos válidos están disponibles en el microservicio localidades. (solo requerido en razon social igual a 21)",
+                    "nullable": true,
+                    "example": "375"
+                  },
+                  "estado_civil": {
+                    "type": "string",
+                    "description": "Código que representa el estado civil del cliente. (solo requerido en razon social igual a 21)\nLos valores permitidos son:\n* (S) SOLTERO\n* (C) CASADO\n* (D) DIVORCIADO\n* (V) VIUDO\n* (O) OTRO\n",
+                    "nullable": true,
+                    "example": "S",
+                    "enum": [
+                      "S",
+                      "C",
+                      "D",
+                      "V",
+                      "O"
+                    ]
+                  },
+                  "domicilio": {
+                    "description": "Domicilio del cliente.",
+                    "required": [
+                      "calle",
+                      "cd_postal",
+                      "localidad",
+                      "numero"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "calle": {
+                        "type": "string",
+                        "description": "Calle donde se ubica la casa o departamento",
+                        "example": "San Martin"
+                      },
+                      "numero": {
+                        "type": "string",
+                        "description": "Altura/Número de la casa o departamento",
+                        "example": "1135"
+                      },
+                      "piso": {
+                        "type": "string",
+                        "description": "Piso del departamento",
+                        "nullable": true,
+                        "example": "1"
+                      },
+                      "depto": {
+                        "type": "string",
+                        "description": "Numero del departamento",
+                        "nullable": true,
+                        "example": "A"
+                      },
+                      "localidad": {
+                        "type": "string",
+                        "description": "Código que representa la localidad del domicilio actual del cliente. Los códigos válidos están disponibles en el microservicio localidades.",
+                        "example": "375"
+                      },
+                      "cd_postal": {
+                        "type": "string",
+                        "description": "Código postal de la localidad seleccionada (se puede obtener del resultado de la localidad obtenido en el microservicio de localidades)",
+                        "example": "1900"
+                      }
+                    },
+                    "nullable": true
+                  },
+                  "telefono": {
+                    "description": "Telefono del cliente.",
+                    "required": [
+                      "caracteristica",
+                      "numero",
+                      "prefijo"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "prefijo": {
+                        "type": "string",
+                        "description": "Prefijo de la ciudad donde se encuentra registrado el teléfono.",
+                        "example": "221"
+                      },
+                      "prefijo_celular": {
+                        "type": "string",
+                        "description": "Indicar el '15' en caso de que corresponda a un teléfono celular.",
+                        "nullable": true,
+                        "example": "15"
+                      },
+                      "caracteristica": {
+                        "type": "string",
+                        "description": "Representa los dígitos entre el prefijo y el número.",
+                        "example": "415"
+                      },
+                      "numero": {
+                        "type": "string",
+                        "description": "Representa los últimos 4 dígitos del número de teléfono.",
+                        "example": "2566"
+                      }
+                    },
+                    "nullable": true
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email del cliente.",
+                    "example": "mariaperez@email.com"
+                  },
+                  "pep": {
+                    "type": "boolean",
+                    "description": "Indica si el cliente es una persona expuesta politicamente. (solo requerido en razon social igual a 21)",
+                    "nullable": true,
+                    "example": false
+                  },
+                  "ddjj_pep": {
+                    "type": "boolean",
+                    "description": "(solo requerido en razon social igual a 21)",
+                    "nullable": true,
+                    "example": false
+                  },
+                  "representante_legal": {
+                    "description": "Representante Legal del cliente. (solo requerido en razon social distinta a 21)",
+                    "required": [
+                      "tipo_representante"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "matricula": {
+                        "type": "string",
+                        "description": "Identificación del representante legal dentro de Federación Patronal Seguros",
+                        "nullable": true,
+                        "example": "1125554"
+                      },
+                      "nombre": {
+                        "type": "string",
+                        "description": "Nombre del representante legal.",
+                        "nullable": true,
+                        "example": "Maria"
+                      },
+                      "apellido": {
+                        "type": "string",
+                        "description": "Apellido del representante legal.",
+                        "nullable": true,
+                        "example": "Perez"
+                      },
+                      "tipo_documento": {
+                        "type": "string",
+                        "description": "Tipo de documento del representante legal.",
+                        "nullable": true,
+                        "example": "DNI",
+                        "enum": [
+                          "DNI",
+                          "PA"
+                        ]
+                      },
+                      "numero_documento": {
+                        "type": "integer",
+                        "description": "Número de documento del representante legal.",
+                        "format": "int32",
+                        "nullable": true,
+                        "example": 34769948
+                      },
+                      "cuil": {
+                        "type": "string",
+                        "description": "Número de cuil del representante legal.",
+                        "nullable": true,
+                        "example": "20347699483"
+                      },
+                      "tipo_representante": {
+                        "type": "string",
+                        "description": "Codigo que representa el tipo de representante. \nLos valores permitidos son:\n* (A) APODERADO\n* (C) CURADOR\n* (G) GARANTE\n* (R) REPRESENTANTE LEGAL\n* (T) TUTOR\n* (U) AUTORIZADO",
+                        "example": "R",
+                        "enum": [
+                          "A",
+                          "C",
+                          "G",
+                          "R",
+                          "T",
+                          "U"
+                        ]
+                      },
+                      "actividad_principal": {
+                        "type": "integer",
+                        "description": "Actividad principal del representante legal. Los códigos válidos son los de las actividades segun ARCA.",
+                        "format": "int32",
+                        "nullable": true,
+                        "example": 131300
+                      },
+                      "sexo": {
+                        "type": "string",
+                        "description": "Código que representa el sexo del representante legal. \nLos valores permitidos son:\n* (F) FEMENINO\n* (M) MASCULINO",
+                        "nullable": true,
+                        "example": "F",
+                        "enum": [
+                          "F",
+                          "M"
+                        ]
+                      },
+                      "nacionalidad": {
+                        "type": "integer",
+                        "description": "Código que representa la nacionalidad del representante legal. \nLos valores permitidos son:\n* (2) ARGENTINA\n* (4) BOLIVIA\n* (5) BRASIL\n* (7) COLOMBIA\n* (10) CHILE\n* (11) ECUADOR\n* (18) PARAGUAY\n* (19) PERU\n* (24) URUGUAY\n* (25) VENEZUELA\n* (999) OTRO",
+                        "format": "int32",
+                        "nullable": true,
+                        "example": 2,
+                        "enum": [
+                          2,
+                          4,
+                          5,
+                          7,
+                          10,
+                          11,
+                          18,
+                          19,
+                          24,
+                          25,
+                          999
+                        ]
+                      },
+                      "fecha_nacimiento": {
+                        "type": "string",
+                        "description": "Fecha de nacimiento del representante legal.",
+                        "format": "date-time",
+                        "nullable": true,
+                        "example": "1992-11-22T00:00:00Z"
+                      },
+                      "condicion_iva": {
+                        "type": "string",
+                        "description": "Condicion de iva del representante legal. \nLos valores permitidos son:\n* (IN) INSCRIPTO\n* (CF) CONSUMIDOR FINAL\n* (EA) EXENTO ACTIVIDAD\n* (IR) INSCRIPTO (R.18/97)\n* (ED) EXENTO DECRETO\n* (MO) MONOTRIBUTO\n* (NC) NO CATEGORIZADO\n* (NA) NO ALCANZADO\n",
+                        "nullable": true,
+                        "example": "CF",
+                        "enum": [
+                          "IN",
+                          "CF",
+                          "EA",
+                          "IR",
+                          "ED",
+                          "MO",
+                          "NC",
+                          "NA"
+                        ]
+                      },
+                      "localidad_nacimiento": {
+                        "type": "string",
+                        "description": "Código que representa la localidad de nacimiento del representante legal. Los códigos válidos están disponibles en el microservicio localidades.",
+                        "nullable": true,
+                        "example": "375"
+                      },
+                      "estado_civil": {
+                        "type": "string",
+                        "description": "Código que representa el estado civil del representante legal. \nLos valores permitidos son:\n* (S) SOLTERO\n* (C) CASADO\n* (D) DIVORCIADO\n* (V) VIUDO\n* (O) OTRO\n",
+                        "nullable": true,
+                        "example": "S",
+                        "enum": [
+                          "S",
+                          "C",
+                          "D",
+                          "V",
+                          "O"
+                        ]
+                      },
+                      "domicilio": {
+                        "description": "Domicilio del representante legal.",
+                        "required": [
+                          "calle",
+                          "cd_postal",
+                          "localidad",
+                          "numero"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "calle": {
+                            "type": "string",
+                            "description": "Calle donde se ubica la casa o departamento",
+                            "example": "San Martin"
+                          },
+                          "numero": {
+                            "type": "string",
+                            "description": "Altura/Número de la casa o departamento",
+                            "example": "1135"
+                          },
+                          "piso": {
+                            "type": "string",
+                            "description": "Piso del departamento",
+                            "nullable": true,
+                            "example": "1"
+                          },
+                          "depto": {
+                            "type": "string",
+                            "description": "Numero del departamento",
+                            "nullable": true,
+                            "example": "A"
+                          },
+                          "localidad": {
+                            "type": "string",
+                            "description": "Código que representa la localidad del domicilio actual del cliente. Los códigos válidos están disponibles en el microservicio localidades.",
+                            "example": "375"
+                          },
+                          "cd_postal": {
+                            "type": "string",
+                            "description": "Código postal de la localidad seleccionada (se puede obtener del resultado de la localidad obtenido en el microservicio de localidades)",
+                            "example": "1900"
+                          }
+                        },
+                        "nullable": true
+                      },
+                      "telefono": {
+                        "description": "Telefono del representante legal.",
+                        "required": [
+                          "caracteristica",
+                          "numero",
+                          "prefijo"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "prefijo": {
+                            "type": "string",
+                            "description": "Prefijo de la ciudad donde se encuentra registrado el teléfono.",
+                            "example": "221"
+                          },
+                          "prefijo_celular": {
+                            "type": "string",
+                            "description": "Indicar el '15' en caso de que corresponda a un teléfono celular.",
+                            "nullable": true,
+                            "example": "15"
+                          },
+                          "caracteristica": {
+                            "type": "string",
+                            "description": "Representa los dígitos entre el prefijo y el número.",
+                            "example": "415"
+                          },
+                          "numero": {
+                            "type": "string",
+                            "description": "Representa los últimos 4 dígitos del número de teléfono.",
+                            "example": "2566"
+                          }
+                        },
+                        "nullable": true
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "Email del representante legal.",
+                        "nullable": true,
+                        "example": "mariaperez@email.com"
+                      },
+                      "pep": {
+                        "type": "boolean",
+                        "description": "Indica si el representante legal es una persona expuesta politicamente.",
+                        "nullable": true,
+                        "example": false
+                      },
+                      "ddjj_pep": {
+                        "type": "boolean",
+                        "nullable": true,
+                        "example": false
+                      }
+                    },
+                    "nullable": true
+                  },
+                  "matricula": {
+                    "type": "string",
+                    "description": "Identificación del cliente dentro de Federación Patronal Seguros",
+                    "nullable": true,
+                    "readOnly": true,
+                    "example": "1125554"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "domicilio",
+                    "email",
+                    "telefono"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "nombre": {
+                      "type": "string",
+                      "description": "Nombre del cliente. (solo requerido en razon social igual a 21)",
+                      "nullable": true,
+                      "example": "Maria"
+                    },
+                    "apellido": {
+                      "type": "string",
+                      "description": "Apellido del cliente. (solo requerido en razon social igual a 21)",
+                      "nullable": true,
+                      "example": "Perez"
+                    },
+                    "tipo_documento": {
+                      "type": "string",
+                      "description": "Tipo de documento del cliente. (solo requerido en razon social igual a 21)",
+                      "nullable": true,
+                      "example": "DNI",
+                      "enum": [
+                        "DNI",
+                        "PA"
+                      ]
+                    },
+                    "numero_documento": {
+                      "type": "integer",
+                      "description": "Número de documento del cliente. (solo requerido en razon social igual a 21)",
+                      "format": "int32",
+                      "nullable": true,
+                      "example": 34769948
+                    },
+                    "cuit": {
+                      "type": "string",
+                      "description": "Numero de Cuit del cliente. (solo requerido en razon social distinta a 21)",
+                      "nullable": true,
+                      "example": "20347699484"
+                    },
+                    "razon_social": {
+                      "type": "string",
+                      "description": "Número de razon social del cliente. \nLos valores permitidos son:\n* (1) SOCIEDAD ANONIMA\n* (2) SOC. DE RESP. LIMITADA\n* (3) SOCIEDAD COLECTIVA\n* (4) OTRAS SOC. LEGALES\n* (5) SOC. DE HECHO\n* (6) CONSORCIO DE PROPIETARIOS\n* (7) BANCO\n* (8) HOSPITAL\n* (9) GOBIERNO NACIONAL\n* (10) GOBIERNO PROVINCIAL\n* (11) GOBIERNO MUNICIPAL\n* (12) COLEGIO PROFESIONAL\n* (13) ESCUELA\n* (14) COOPERATIVA\n* (15) ENTIDAD DE BIEN PUBLICO\n* (17) SOC. O ASOC. CIVIL Y SIND.\n* (18) CLUB\n* (19) SUCESION\n* (21) PERSONA FISICA\n* (22) CONSORCIO NO CONSTITUIDO",
+                      "nullable": true,
+                      "example": "21",
+                      "enum": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12",
+                        "13",
+                        "14",
+                        "15",
+                        "17",
+                        "18",
+                        "19",
+                        "21",
+                        "22"
+                      ]
+                    },
+                    "razon": {
+                      "type": "string",
+                      "description": "Nombre de la razón social del cliente. (solo requerido en razon social distinta a 21)",
+                      "nullable": true,
+                      "example": "EMPRESA S.A"
+                    },
+                    "actividad_principal": {
+                      "type": "integer",
+                      "description": "Actividad principal del cliente. Los códigos válidos son los de las actividades segun ARCA.",
+                      "format": "int32",
+                      "nullable": true,
+                      "example": 40033
+                    },
+                    "sexo": {
+                      "type": "string",
+                      "description": "Código que representa el sexo del cliente. (solo requerido en razon social igual a 21) \nLos valores permitidos son:\n* (F) FEMENINO\n* (M) MASCULINO",
+                      "nullable": true,
+                      "example": "F",
+                      "enum": [
+                        "F",
+                        "M"
+                      ]
+                    },
+                    "nacionalidad": {
+                      "type": "string",
+                      "description": "Código que representa la nacionalidad del cliente. (solo requerido en razon social igual a 21)\nLos valores permitidos son:\n* (2) ARGENTINA\n* (4) BOLIVIA\n* (5) BRASIL\n* (7) COLOMBIA\n* (10) CHILE\n* (11) ECUADOR\n* (18) PARAGUAY\n* (19) PERU\n* (24) URUGUAY\n* (25) VENEZUELA\n* (999) OTRO",
+                      "nullable": true,
+                      "example": "2",
+                      "enum": [
+                        "2",
+                        "4",
+                        "5",
+                        "7",
+                        "10",
+                        "11",
+                        "18",
+                        "19",
+                        "24",
+                        "25",
+                        "999"
+                      ]
+                    },
+                    "fecha_nacimiento": {
+                      "type": "string",
+                      "description": "Fecha de nacimiento del cliente (solo requerido en razon social igual a 21)",
+                      "format": "date-time",
+                      "nullable": true,
+                      "example": "1992-11-22T00:00:00Z"
+                    },
+                    "condicion_iva": {
+                      "type": "string",
+                      "description": "Condicion de iva del cliente. \nLos valores permitidos son:\n* (IN) INSCRIPTO\n* (CF) CONSUMIDOR FINAL\n* (EA) EXENTO ACTIVIDAD\n* (IR) INSCRIPTO (R.18/97)\n* (ED) EXENTO DECRETO\n* (MO) MONOTRIBUTO\n* (NC) NO CATEGORIZADO\n* (NA) NO ALCANZADO\n",
+                      "nullable": true,
+                      "example": "CF",
+                      "enum": [
+                        "IN",
+                        "CF",
+                        "EA",
+                        "IR",
+                        "ED",
+                        "MO",
+                        "NC",
+                        "NA"
+                      ]
+                    },
+                    "localidad_nacimiento": {
+                      "type": "string",
+                      "description": "Código que representa la localidad de nacimiento del cliente. Los códigos válidos están disponibles en el microservicio localidades. (solo requerido en razon social igual a 21)",
+                      "nullable": true,
+                      "example": "375"
+                    },
+                    "estado_civil": {
+                      "type": "string",
+                      "description": "Código que representa el estado civil del cliente. (solo requerido en razon social igual a 21)\nLos valores permitidos son:\n* (S) SOLTERO\n* (C) CASADO\n* (D) DIVORCIADO\n* (V) VIUDO\n* (O) OTRO\n",
+                      "nullable": true,
+                      "example": "S",
+                      "enum": [
+                        "S",
+                        "C",
+                        "D",
+                        "V",
+                        "O"
+                      ]
+                    },
+                    "domicilio": {
+                      "description": "Domicilio del cliente.",
+                      "required": [
+                        "calle",
+                        "cd_postal",
+                        "localidad",
+                        "numero"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "calle": {
+                          "type": "string",
+                          "description": "Calle donde se ubica la casa o departamento",
+                          "example": "San Martin"
+                        },
+                        "numero": {
+                          "type": "string",
+                          "description": "Altura/Número de la casa o departamento",
+                          "example": "1135"
+                        },
+                        "piso": {
+                          "type": "string",
+                          "description": "Piso del departamento",
+                          "nullable": true,
+                          "example": "1"
+                        },
+                        "depto": {
+                          "type": "string",
+                          "description": "Numero del departamento",
+                          "nullable": true,
+                          "example": "A"
+                        },
+                        "localidad": {
+                          "type": "string",
+                          "description": "Código que representa la localidad del domicilio actual del cliente. Los códigos válidos están disponibles en el microservicio localidades.",
+                          "example": "375"
+                        },
+                        "cd_postal": {
+                          "type": "string",
+                          "description": "Código postal de la localidad seleccionada (se puede obtener del resultado de la localidad obtenido en el microservicio de localidades)",
+                          "example": "1900"
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "telefono": {
+                      "description": "Telefono del cliente.",
+                      "required": [
+                        "caracteristica",
+                        "numero",
+                        "prefijo"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "prefijo": {
+                          "type": "string",
+                          "description": "Prefijo de la ciudad donde se encuentra registrado el teléfono.",
+                          "example": "221"
+                        },
+                        "prefijo_celular": {
+                          "type": "string",
+                          "description": "Indicar el '15' en caso de que corresponda a un teléfono celular.",
+                          "nullable": true,
+                          "example": "15"
+                        },
+                        "caracteristica": {
+                          "type": "string",
+                          "description": "Representa los dígitos entre el prefijo y el número.",
+                          "example": "415"
+                        },
+                        "numero": {
+                          "type": "string",
+                          "description": "Representa los últimos 4 dígitos del número de teléfono.",
+                          "example": "2566"
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email del cliente.",
+                      "example": "mariaperez@email.com"
+                    },
+                    "pep": {
+                      "type": "boolean",
+                      "description": "Indica si el cliente es una persona expuesta politicamente. (solo requerido en razon social igual a 21)",
+                      "nullable": true,
+                      "example": false
+                    },
+                    "ddjj_pep": {
+                      "type": "boolean",
+                      "description": "(solo requerido en razon social igual a 21)",
+                      "nullable": true,
+                      "example": false
+                    },
+                    "representante_legal": {
+                      "description": "Representante Legal del cliente. (solo requerido en razon social distinta a 21)",
+                      "required": [
+                        "tipo_representante"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "matricula": {
+                          "type": "string",
+                          "description": "Identificación del representante legal dentro de Federación Patronal Seguros",
+                          "nullable": true,
+                          "example": "1125554"
+                        },
+                        "nombre": {
+                          "type": "string",
+                          "description": "Nombre del representante legal.",
+                          "nullable": true,
+                          "example": "Maria"
+                        },
+                        "apellido": {
+                          "type": "string",
+                          "description": "Apellido del representante legal.",
+                          "nullable": true,
+                          "example": "Perez"
+                        },
+                        "tipo_documento": {
+                          "type": "string",
+                          "description": "Tipo de documento del representante legal.",
+                          "nullable": true,
+                          "example": "DNI",
+                          "enum": [
+                            "DNI",
+                            "PA"
+                          ]
+                        },
+                        "numero_documento": {
+                          "type": "integer",
+                          "description": "Número de documento del representante legal.",
+                          "format": "int32",
+                          "nullable": true,
+                          "example": 34769948
+                        },
+                        "cuil": {
+                          "type": "string",
+                          "description": "Número de cuil del representante legal.",
+                          "nullable": true,
+                          "example": "20347699483"
+                        },
+                        "tipo_representante": {
+                          "type": "string",
+                          "description": "Codigo que representa el tipo de representante. \nLos valores permitidos son:\n* (A) APODERADO\n* (C) CURADOR\n* (G) GARANTE\n* (R) REPRESENTANTE LEGAL\n* (T) TUTOR\n* (U) AUTORIZADO",
+                          "example": "R",
+                          "enum": [
+                            "A",
+                            "C",
+                            "G",
+                            "R",
+                            "T",
+                            "U"
+                          ]
+                        },
+                        "actividad_principal": {
+                          "type": "integer",
+                          "description": "Actividad principal del representante legal. Los códigos válidos son los de las actividades segun ARCA.",
+                          "format": "int32",
+                          "nullable": true,
+                          "example": 131300
+                        },
+                        "sexo": {
+                          "type": "string",
+                          "description": "Código que representa el sexo del representante legal. \nLos valores permitidos son:\n* (F) FEMENINO\n* (M) MASCULINO",
+                          "nullable": true,
+                          "example": "F",
+                          "enum": [
+                            "F",
+                            "M"
+                          ]
+                        },
+                        "nacionalidad": {
+                          "type": "integer",
+                          "description": "Código que representa la nacionalidad del representante legal. \nLos valores permitidos son:\n* (2) ARGENTINA\n* (4) BOLIVIA\n* (5) BRASIL\n* (7) COLOMBIA\n* (10) CHILE\n* (11) ECUADOR\n* (18) PARAGUAY\n* (19) PERU\n* (24) URUGUAY\n* (25) VENEZUELA\n* (999) OTRO",
+                          "format": "int32",
+                          "nullable": true,
+                          "example": 2,
+                          "enum": [
+                            2,
+                            4,
+                            5,
+                            7,
+                            10,
+                            11,
+                            18,
+                            19,
+                            24,
+                            25,
+                            999
+                          ]
+                        },
+                        "fecha_nacimiento": {
+                          "type": "string",
+                          "description": "Fecha de nacimiento del representante legal.",
+                          "format": "date-time",
+                          "nullable": true,
+                          "example": "1992-11-22T00:00:00Z"
+                        },
+                        "condicion_iva": {
+                          "type": "string",
+                          "description": "Condicion de iva del representante legal. \nLos valores permitidos son:\n* (IN) INSCRIPTO\n* (CF) CONSUMIDOR FINAL\n* (EA) EXENTO ACTIVIDAD\n* (IR) INSCRIPTO (R.18/97)\n* (ED) EXENTO DECRETO\n* (MO) MONOTRIBUTO\n* (NC) NO CATEGORIZADO\n* (NA) NO ALCANZADO\n",
+                          "nullable": true,
+                          "example": "CF",
+                          "enum": [
+                            "IN",
+                            "CF",
+                            "EA",
+                            "IR",
+                            "ED",
+                            "MO",
+                            "NC",
+                            "NA"
+                          ]
+                        },
+                        "localidad_nacimiento": {
+                          "type": "string",
+                          "description": "Código que representa la localidad de nacimiento del representante legal. Los códigos válidos están disponibles en el microservicio localidades.",
+                          "nullable": true,
+                          "example": "375"
+                        },
+                        "estado_civil": {
+                          "type": "string",
+                          "description": "Código que representa el estado civil del representante legal. \nLos valores permitidos son:\n* (S) SOLTERO\n* (C) CASADO\n* (D) DIVORCIADO\n* (V) VIUDO\n* (O) OTRO\n",
+                          "nullable": true,
+                          "example": "S",
+                          "enum": [
+                            "S",
+                            "C",
+                            "D",
+                            "V",
+                            "O"
+                          ]
+                        },
+                        "domicilio": {
+                          "description": "Domicilio del representante legal.",
+                          "required": [
+                            "calle",
+                            "cd_postal",
+                            "localidad",
+                            "numero"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "calle": {
+                              "type": "string",
+                              "description": "Calle donde se ubica la casa o departamento",
+                              "example": "San Martin"
+                            },
+                            "numero": {
+                              "type": "string",
+                              "description": "Altura/Número de la casa o departamento",
+                              "example": "1135"
+                            },
+                            "piso": {
+                              "type": "string",
+                              "description": "Piso del departamento",
+                              "nullable": true,
+                              "example": "1"
+                            },
+                            "depto": {
+                              "type": "string",
+                              "description": "Numero del departamento",
+                              "nullable": true,
+                              "example": "A"
+                            },
+                            "localidad": {
+                              "type": "string",
+                              "description": "Código que representa la localidad del domicilio actual del cliente. Los códigos válidos están disponibles en el microservicio localidades.",
+                              "example": "375"
+                            },
+                            "cd_postal": {
+                              "type": "string",
+                              "description": "Código postal de la localidad seleccionada (se puede obtener del resultado de la localidad obtenido en el microservicio de localidades)",
+                              "example": "1900"
+                            }
+                          },
+                          "nullable": true
+                        },
+                        "telefono": {
+                          "description": "Telefono del representante legal.",
+                          "required": [
+                            "caracteristica",
+                            "numero",
+                            "prefijo"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "prefijo": {
+                              "type": "string",
+                              "description": "Prefijo de la ciudad donde se encuentra registrado el teléfono.",
+                              "example": "221"
+                            },
+                            "prefijo_celular": {
+                              "type": "string",
+                              "description": "Indicar el '15' en caso de que corresponda a un teléfono celular.",
+                              "nullable": true,
+                              "example": "15"
+                            },
+                            "caracteristica": {
+                              "type": "string",
+                              "description": "Representa los dígitos entre el prefijo y el número.",
+                              "example": "415"
+                            },
+                            "numero": {
+                              "type": "string",
+                              "description": "Representa los últimos 4 dígitos del número de teléfono.",
+                              "example": "2566"
+                            }
+                          },
+                          "nullable": true
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "Email del representante legal.",
+                          "nullable": true,
+                          "example": "mariaperez@email.com"
+                        },
+                        "pep": {
+                          "type": "boolean",
+                          "description": "Indica si el representante legal es una persona expuesta politicamente.",
+                          "nullable": true,
+                          "example": false
+                        },
+                        "ddjj_pep": {
+                          "type": "boolean",
+                          "nullable": true,
+                          "example": false
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "matricula": {
+                      "type": "string",
+                      "description": "Identificación del cliente dentro de Federación Patronal Seguros",
+                      "nullable": true,
+                      "readOnly": true,
+                      "example": "1125554"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "error_description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "error_description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "error_description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "error_description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clientes/{matricula}/medio-pago": {
+      "post": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Vinculación de medio de pago a cliente",
+        "operationId": "vincularMedioPagoUsingPOST",
+        "parameters": [
+          {
+            "name": "matricula",
+            "in": "path",
+            "description": "matricula",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "fecha_vencimiento",
+                  "nro_tarjeta",
+                  "tipo_tarjeta"
+                ],
+                "properties": {
+                  "fecha_vencimiento": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-22T00:00:00.000Z",
+                    "description": "Fecha de vencimiento del medio de pago."
+                  },
+                  "id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 1,
+                    "description": "Identificador del medio de pago agregado.",
+                    "readOnly": true
+                  },
+                  "nro_tarjeta": {
+                    "type": "string",
+                    "example": "XXXXXXXXXXXXXXXX",
+                    "description": "Número de medio de pago."
+                  },
+                  "tipo_tarjeta": {
+                    "type": "string",
+                    "example": "VI",
+                    "description": "Código que representa el tipo de medio de pago. \nLos valores permitidos son:\n* (VI) VISA\n* (MC) MASTERCARD\n* (CA) CABAL\n* (AE) AMERICAN EXPRESS\n* (CO) COOPEPLUS\n* (FC) FAVACARD\n* (NJ) NARANJA\n* (PA) PATAGONIA\n* (VE) VISA DEBITO\n* (DE) DEBITO AUTOMATICO\n",
+                    "enum": [
+                      "VI",
+                      "MC",
+                      "CA",
+                      "AE",
+                      "CO",
+                      "FC",
+                      "NJ",
+                      "PA",
+                      "VE",
+                      "DE"
+                    ]
+                  }
+                },
+                "title": "MedioPagoDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "fecha_vencimiento",
+                    "nro_tarjeta",
+                    "tipo_tarjeta"
+                  ],
+                  "properties": {
+                    "fecha_vencimiento": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2022-11-22T00:00:00.000Z",
+                      "description": "Fecha de vencimiento del medio de pago."
+                    },
+                    "id": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 1,
+                      "description": "Identificador del medio de pago agregado.",
+                      "readOnly": true
+                    },
+                    "nro_tarjeta": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXX",
+                      "description": "Número de medio de pago."
+                    },
+                    "tipo_tarjeta": {
+                      "type": "string",
+                      "example": "VI",
+                      "description": "Código que representa el tipo de medio de pago. \nLos valores permitidos son:\n* (VI) VISA\n* (MC) MASTERCARD\n* (CA) CABAL\n* (AE) AMERICAN EXPRESS\n* (CO) COOPEPLUS\n* (FC) FAVACARD\n* (NJ) NARANJA\n* (PA) PATAGONIA\n* (VE) VISA DEBITO\n* (DE) DEBITO AUTOMATICO\n",
+                      "enum": [
+                        "VI",
+                        "MC",
+                        "CA",
+                        "AE",
+                        "CO",
+                        "FC",
+                        "NJ",
+                        "PA",
+                        "VE",
+                        "DE"
+                      ]
+                    }
+                  },
+                  "title": "MedioPagoDTO"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "error_description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "error_description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "error_description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "error_description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>API Federacion Patronal</title>
+  
+    <!-- favicon -->
+
+    <link rel="apple-touch-icon" sizes="180x180" href="images/ico3/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/ico3/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/ico3/favicon-16x16.png">
+    <link rel="manifest" href="images/ico3/site.webmanifest">
+    <link rel="mask-icon" href="images/ico3/safari-pinned-tab.svg" color="#5bbad5">
+
+    <!-- // -->
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,600i,700,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/feda.min.css">
+    <link rel="stylesheet" href="css/default.min.css">
+    <link rel="stylesheet" href="css/custom.css">
+    
+</head>
+<body class="single-documentacion autenticacion">
+    <header class="header header-variant-2 bg-blanco fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <a class="navbar-brand" href="index.html">
+            <img src="https://self2.fedpat.com.ar/fpmedia/images/imagotipo_fp_positivo.svg" class="img-fluid" alt="Federación Patronal Seguros S.A.">
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-api" aria-controls="nav-api" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="nav-api">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="servicios.html">API servicios</a>
+              </li>
+            </ul>
+            <!-- <button class="btn btn-hierarchy_1 small ml-2" data-toggle="modal" data-target="#modal-login">Ingresar</button> -->
+          </div>
+        </nav>
+    </header>
+    <main class="pb-0" style="padding-top: 64px;">
+      <div class="col-documentation-links" id="doclinks">
+        <h5>Documentación</h5>
+        <ol class="olLocalLinks">
+          <li><a href="#introduccion" class="default-link localink" topmenos="50">Introducción</a></li>
+          <li><a href="#datosAdicional" class="default-link localink" topmenos="50">Datos adicionales</a></li>
+          <li><a href="#seguridad" class="default-link localink" topmenos="50">Seguridad</a></li>
+          <li><a href="#metodos" class="default-link localink" topmenos="50">Métodos</a></li>
+        </ol>
+      </div>
+      <div class="col-documentation-content" id="doccontent">
+        <div class="documentation-content-wrapper">
+          <h1 class="title-primary mt-4" style="font-size: 50px">Autenticación</h1>
+          <div class="col-documentation-links hidden992" id="doclinks">
+            <h5>Documentación</h5>
+            <ol class="olLocalLinks">
+              <li><a href="#introduccion" class="default-link localink" topmenos="50">Introducción</a></li>
+              <li><a href="#datosAdicional" class="default-link localink" topmenos="50">Datos adicionales</a></li>
+              <li><a href="#seguridad" class="default-link localink" topmenos="50">Seguridad</a></li>
+              <li><a href="#metodos" class="default-link localink" topmenos="50">Métodos</a></li>
+            </ol>
+          </div>
+          <div id="introduccion" class="subject">
+            <h3 class="title-primary">Introducción</h3>
+            <p>El objetivo es detallar el proceso de autenticación de los distintos clientes que desean consumir los servicios brindados por Federación Patronal Seguros.</p>
+            <h4 class="font-weight-bold c-primary-dark">Alcance</h4>
+            <p>Esta documentación brinda especificaciones técnicas y funcionales para que los clientes de Federación Patronal Seguros habilitados puedan generar el token requerido para consumir aquellos servicios publicados en la API que requieran autenticación. Dicho token debe agregarse en el header de autorización de todos los request que se realicen a servicios que requieran autenticación.</p>
+          </div>
+          <div id="datosAdicional" class="subject">
+            <h3 class="title-primary">Datos adicionales</h3>
+            <h5 class="mt-4">Ambientes</h5>
+            <p>Federación Patronal Seguros cuenta con dos ambientes en el que expone sus servicios, el ambiente productivo y el sandbox. Cada uno es accedido mediante distintas URLs.</p>
+            <ul>
+              <li><strong>Sandbox:</strong> corresponde al entorno de pruebas con el que cada cliente va a interactuar durante la etapa de desarrollo. <br>
+                  <a href="https://api-sandbox.fedpat.com.ar/">https://api-sandbox.fedpat.com.ar/</a>
+              </li>
+              <li>
+                  <strong>Productivo:</strong> Antes de comenzar a trabajar con el ambiente productivo, se realizará un proceso de auditoría sobre los clientes para validar que la generación del token se realiza siguiendo los consejos sugeridos en el apartado “Seguridad”. <br>
+                  <a href="https://api.fedpat.com.ar/">https://api.fedpat.com.ar/</a>
+              </li>
+            </ul>
+            <h5 class="mt-4">Clientes API</h5>
+            <p>Para brindar acceso a los servicios de la API que requieran autenticación, Federación Patronal cuenta con un conjunto de clientes registrados, e identificados con claves únicas (CLIENT_ID/CLIENT_SECRET) que permiten controlar e identificar el origen de las peticiones recibidas. Cada cliente tendrá acceso a un conjunto de servicios limitado. <br>A cada cliente se le proveerán las credenciales necesarias para poder realizar el proceso de autenticación en forma correcta, utilizando un medio de comunicación seguro, que permita mantener la confidencialidad de los datos intercambiados.
+            </p>
+          </div>
+          <div id="seguridad" class="subject">
+            <h3 class="title-primary">Seguridad</h3>
+            <p>Para poder consumir los servicios provistos por la API que se encuentran protegidos mediante un factor de autenticación, es necesario que previamente cada cliente implemente la obtención del token.</p>
+            <p>Cada petición que se realice sobre un recurso protegido deberá incluir un Bearer token en el header Authorization.</p>
+            <pre class="code">
+  <code>Authorization: Bearer &lt;token&gt;</code>
+            </pre>
+            <h5 class="mt-4">Requisitos</h5>
+            <p>Para obtener dicho token, se utilizará el servicio “Generar token” explicado en el apartado <a href="#metodos" class="localink" topmenos="50">Métodos</a>. Es necesario que esta autenticación se realice <b>directamente desde el lado del SERVIDOR, y NO desde el lado del cliente (JavaScript)</b> dado que se intercambiarán datos sensibles entre cliente/servidor que, si quedan expuestos en el navegador del usuario, la identidad de los clientes puede verse comprometida. </p>
+            <p>Por esta razón, antes de pasar al ambiente productivo se llevará a cabo un proceso de auditoría sobre el código de los clientes, para verificar que las credenciales no quedan expuestas, y se garantiza la confidencialidad de estas en el proceso de autenticación. Por ejemplo: verificando que las credenciales del cliente no se encuentren almacenadas en el frontend del sitio web. En caso de incumplimiento, se dará de baja el cliente.</p>
+          </div>
+          <div id="metodos" class="subject">
+            <h3 class="title-primary">Métodos</h3>
+            <div id="generar-token">
+              <ul class="reset">
+                <li><strong>Descripción: </strong>El Servicio permite la obtención de un token válido de acceso para la aplicación.</li>
+                <li><strong>URL: </strong><span>https://[ambiente].fedpat.com.ar/oauth/token</span> <br>
+                  <span>[ambiente]: api/api-sandbox</span>
+                </li>
+                <li><strong>Method HTTP: </strong>POST</li>
+              </ul>
+              <h5 class="my-4">Requisitos</h5>
+              <div class="separator">
+                <div class="alert alert-type-1 alert-info mb-4">Authorization</div>
+  <pre class="code">
+  <code>
+  Type: Basic Auth*
+  Username: Client_id
+  Password: Client_secrect
+  </code>
+  </pre>
+              </div>
+              <div class="separator">
+                <div class="alert alert-type-1 alert-info mb-4">Headers</div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Key</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Content-type</td>
+                      <td>application/x-www-form-urlencoded</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="separator">
+                <div class="alert alert-type-1 alert-info mb-4">Body</div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Key</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>grant_type</td>
+                      <td>password</td>
+                    </tr>
+                    <tr>
+                      <td>Username</td>
+                      <td>******</td>
+                    </tr>
+                    <tr>
+                      <td>password</td>
+                      <td>******</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <i class="mb-2">* Basic Auth se compone por {{CLIENT_ID}}:{{CLIENT_SECRET}} cifrado en base64</i>
+              </div>
+              <div class="separator">
+                <h6 class="my-4"><i class="fas fa-check-circle con mr-2"></i>Respuesta exitosa: objeto JSON</h6>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Campo</th>
+                      <th>Descripción</th>
+                      <th>Tipo de dato</th>
+                      <th>Obligatorio</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>access_token</td>
+                      <td>La cadena de token de acceso emitida por el servidor de autorización</td>
+                      <td>String</td>
+                      <td>Si</td>
+                    </tr>
+                    <tr>
+                      <td>token_type</td>
+                      <td>El tipo de token que es solo la cadena “bearer”</td>
+                      <td>String</td>
+                      <td>Si</td>
+                    </tr>
+                    <tr>
+                      <td>expires_in</td>
+                      <td>Duración del tiempo para el que se otorga el token de acceso.</td>
+                      <td>integer</td>
+                      <td>Si</td>
+                    </tr>
+                    <tr>
+                      <td>Scope</td>
+                      <td>read /write</td>
+                      <td>String</td>
+                      <td>Si</td>
+                    </tr>
+                    <tr>
+                      <td>Jti</td>
+                      <td>Identificador único</td>
+                      <td>String</td>
+                      <td>Si</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="separator">
+                <h6 class="my-4">Formato respuesta exitosa</h6>
+  <pre class="code">
+  <code>
+  {
+    "access_token": "String",
+    "token_type": "String",
+    "expires_in": integer,
+    "scope": "String",
+    "jti": "String"
+  }
+  </code>
+  </pre>
+              </div>
+              <div class="separator">
+                <h6 class="my-4"><i class="fas fa-times-circle sin mr-2"></i>Respuesta fallida: objeto JSON</h6>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Campo</th>
+                      <th>Descripción</th>
+                      <th>Tipo de dato</th>
+                      <th>Obligatorio</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Error</td>
+                      <td>Nombre del posible del error</td>
+                      <td>String</td>
+                      <td>Si</td>
+                    </tr>
+                    <tr>
+                      <td>error_description</td>
+                      <td>Breve descripción del posible error</td>
+                      <td>String</td>
+                      <td>Si</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="separator">
+                <h6 class="my-4">Errores posiblesRespuesta fallida: objeto JSON</h6>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Error</th>
+                      <th>Descripción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>invalid_request</td>
+                      <td>A la solicitud le falta un parámetro, por lo que el servidor no puede continuar con la solicitud. Esto también se puede devolver si la solicitud incluye un parámetro no compatible o repite un parámetro.</td>
+                    </tr>
+                    <tr>
+                      <td>invalid_client</td>
+                      <td>La autenticación del cliente falló, si la solicitud contiene un ID de cliente o secreto no válido.</td>
+                    </tr>
+                    <tr>
+                      <td>invalid_grant</td>
+                      <td>El código de autorización (o la contraseña del usuario para el tipo de concesión de contraseña) no es válido o caducó. Este también es el error que devolvería si la URL de redireccionamiento proporcionada en la concesión de autorización no coincide con la URL proporcionada en esta solicitud de token de acceso.</td>
+                    </tr>
+                    <tr>
+                      <td>invalid_scope</td>
+                      <td>Para las solicitudes de token de acceso que incluyen un alcance (contraseña o concesiones de credenciales de cliente), este error indica un valor de alcance no válido en la solicitud</td>
+                    </tr>
+                    <tr>
+                      <td>unauthorized_client</td>
+                      <td>Este cliente no está autorizado a usar el tipo de concesión solicitado. Por ejemplo, si se restringe qué aplicaciones pueden usar la concesión implícita, devolverá este error para las otras aplicaciones</td>
+                    </tr>
+                    <tr>
+                      <td>unsupported_grant_type</td>
+                      <td>Si se solicita un tipo de concesión que el servidor de autorización no reconoce. Tenga en cuenta que los tipos de concesión desconocidos también usan este código de error específico en lugar de usar el invalid_request anterior</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="separator">
+                <h6 class="my-4">Formato respuesta fallida</h6>
+<pre class="code">
+<code>
+  {
+    "error": "String ",
+    "error_description": "String"
+  }
+  
+</code>
+</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/localsroll.js"></script>
+    <script src="js/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+      $(document).ready(function(){
+
+        $(".localink").localscroll();
+        
+      });
+    </script>
+        
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5157eae4a5ae9ba',t:'MTc5MzE0Mzg5Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

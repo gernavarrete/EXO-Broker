@@ -1,0 +1,3402 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Cotizacion",
+    "description": "API FedPat SandBox",
+    "termsOfService": "https://www.fedpat.com.ar/terminos",
+    "contact": {
+      "name": "API Support",
+      "url": "https://www.fedpat.com.ar/support",
+      "email": "soporte@fedpat.com.ar"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "2.1.1"
+  },
+  "servers": [
+    {
+      "url": "https://api-sandbox.fedpat.com.ar/v1",
+      "description": "API SandBox v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "JWT": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "paths": {
+    "/cotizador-otros-ramos/{numeroCotizacion}": {
+      "get": {
+        "tags": [
+          "Cotización otros ramos"
+        ],
+        "summary": "Obtiene cotización de Otros Ramos",
+        "operationId": "getCotizacion_1",
+        "parameters": [
+          {
+            "name": "numeroCotizacion",
+            "in": "path",
+            "description": "Número de cotización a obtener",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operacion existosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sucursal": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "numero_cotizacion": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "consecutivo": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "fecha_desde": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "fecha_hasta": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "codigo_ramo": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "codigo_producto": {
+                      "type": "string"
+                    },
+                    "calculo": {
+                      "type": "string"
+                    },
+                    "facturacion": {
+                      "type": "string"
+                    },
+                    "vigencia": {
+                      "type": "string"
+                    },
+                    "descuento_comision": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "descuento_prima": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "medio_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "derecho_emision": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "moneda": {
+                      "type": "string"
+                    },
+                    "plan_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "localidad_solicitante": {
+                      "type": "string"
+                    },
+                    "facultativo": {
+                      "type": "boolean"
+                    },
+                    "imprime_poliza": {
+                      "type": "boolean"
+                    },
+                    "atencion_mostrador": {
+                      "type": "boolean"
+                    },
+                    "epp": {
+                      "type": "boolean"
+                    },
+                    "refacturaciones": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "contratante": {
+                      "required": [
+                        "condicion_iva"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "Número de identificación personal, ya sea para DNI, PA.",
+                          "format": "int32",
+                          "nullable": true,
+                          "example": 34769948
+                        },
+                        "tipo_id": {
+                          "type": "string",
+                          "description": "Tipo de identificación personal.",
+                          "nullable": true,
+                          "example": "DNI",
+                          "enum": [
+                            "DNI",
+                            "PA"
+                          ]
+                        },
+                        "cuit": {
+                          "type": "string",
+                          "description": "Número de CUIT del contratante en caso de no ser consumidor final.",
+                          "nullable": true,
+                          "example": "23347699489"
+                        },
+                        "nombre": {
+                          "type": "string",
+                          "description": "Nombre de la persona contratante.",
+                          "nullable": true,
+                          "example": "Juan"
+                        },
+                        "apellido": {
+                          "type": "string",
+                          "description": "Apellido de la persona contratante.",
+                          "nullable": true,
+                          "example": "Perez"
+                        },
+                        "razon_social": {
+                          "type": "string",
+                          "description": "Razón Social del contratante en caso de no ser persona fisica.",
+                          "nullable": true,
+                          "example": "21"
+                        },
+                        "condicion_iva": {
+                          "type": "string",
+                          "description": "Condición de IVA. Indica si es: INSCRIPTO, CONSUMIDOR FINAL, EXENTO ACTIVIDAD, INSCRIPTO (R.18/97), EXENTO DECRETO, MONOTRIBUTO, NO CATEGORIZADO, VUELCO SOCIOS, NO ALCANZADO",
+                          "nullable": true,
+                          "example": "CF",
+                          "enum": [
+                            "IN",
+                            "CF",
+                            "EA",
+                            "IR",
+                            "ED",
+                            "MO",
+                            "NC",
+                            "0",
+                            "NA"
+                          ]
+                        },
+                        "localidad": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "matricula": {
+                          "type": "string",
+                          "description": "Identificación de un cliente existente dentro de Federación Patronal Seguros",
+                          "nullable": true,
+                          "example": "1125554"
+                        },
+                        "nacionalidad": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "bienes": {
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "coberturas",
+                          "codigo_bien",
+                          "datos"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "codigo_bien": {
+                            "type": "integer",
+                            "description": "Código que representa el bien a aplicar en la cotización realizada",
+                            "format": "int32",
+                            "nullable": true,
+                            "example": 1,
+                            "externalDocs": {
+                              "description": "Los códigos existentes pueden encontrarse aquí",
+                              "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getBienes"
+                            }
+                          },
+                          "datos": {
+                            "type": "array",
+                            "description": "Colección de Datos que pueden aplicar en la cotización realizada",
+                            "nullable": true,
+                            "externalDocs": {
+                              "description": "Los datos existentes pueden encontrarse aquí",
+                              "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getDatosParametricosCotizacion"
+                            },
+                            "items": {
+                              "required": [
+                                "codigo"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "codigo": {
+                                  "type": "string",
+                                  "description": "Codigo del dato"
+                                },
+                                "valor": {
+                                  "type": "string",
+                                  "description": "Valor del dato",
+                                  "nullable": true,
+                                  "externalDocs": {
+                                    "description": "Los valores posibles pueden encontrarse aquí",
+                                    "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getOpciones_1"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "coberturas": {
+                            "type": "array",
+                            "description": "Colección de coberturas que pueden aplicar en la cotización realizada",
+                            "nullable": true,
+                            "externalDocs": {
+                              "description": "Las coberturas existentes pueden encontrarse aquí",
+                              "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getBienesCoberturas_1"
+                            },
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "codigo_ramo_contable": {
+                                  "type": "integer",
+                                  "description": "Codigo de ramo contable para la cobertura",
+                                  "format": "int32",
+                                  "nullable": true
+                                },
+                                "codigo_cobertura": {
+                                  "type": "string",
+                                  "description": "Codigo de cobertura",
+                                  "nullable": true
+                                },
+                                "suma_asegurada": {
+                                  "type": "number",
+                                  "description": "Suma asegurada para la cobertura",
+                                  "format": "double",
+                                  "nullable": true
+                                },
+                                "cantidad": {
+                                  "type": "integer",
+                                  "description": "Cantidad para la cobertura",
+                                  "format": "int32",
+                                  "nullable": true
+                                }
+                              },
+                              "description": "Colección de coberturas que pueden aplicar en la cotización realizada",
+                              "nullable": true,
+                              "externalDocs": {
+                                "description": "Las coberturas existentes pueden encontrarse aquí",
+                                "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getBienesCoberturas_1"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "planes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "codigo": {
+                            "type": "string"
+                          },
+                          "descripcion": {
+                            "type": "string"
+                          },
+                          "premio_ramo": {
+                            "type": "number",
+                            "format": "double"
+                          },
+                          "premio_total": {
+                            "type": "number",
+                            "format": "double"
+                          },
+                          "prima_tarifa": {
+                            "type": "number",
+                            "format": "double"
+                          },
+                          "in_exclusion": {
+                            "type": "string"
+                          },
+                          "monto_cuota_total": {
+                            "type": "number",
+                            "format": "double"
+                          },
+                          "monto_pago_contado": {
+                            "type": "number",
+                            "format": "double"
+                          }
+                        }
+                      }
+                    },
+                    "producto_modular": {
+                      "required": [
+                        "cant_modulos",
+                        "codigo_producto",
+                        "fecha_nacimiento"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "cant_modulos": {
+                          "type": "integer",
+                          "format": "int32",
+                          "description": "Cantidad de módulos contratados.\r\nLa cantidad máxima permitida por cotización es de 10 módulos, la cantidad máxima total por cliente es de 50 módulos vigentes.\r\nProducto Sepelio Modular(370002) admite máximo un módulo por cotización.",
+                          "example": 0,
+                          "default": 0
+                        },
+                        "codigo_producto": {
+                          "type": "string",
+                          "description": "Código del producto modular asociado a la cotización. Los productos permitidos son Vida Modular(190001), Salud Modular(360011), Robo Identidad Modular(70304) y Sepelio Modular(370002).",
+                          "enum": [
+                            "190001",
+                            "360011",
+                            "70304",
+                            "370002"
+                          ],
+                          "example": 190001
+                        },
+                        "fecha_nacimiento": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Fecha de nacimiento del contratante (dd/MM/YYYY)."
+                        },
+                        "edad": {
+                          "type": "integer",
+                          "format": "int32",
+                          "readOnly": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas, el token ingresado no es correcto",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso restringido, no se poseen los permisos para acceder al recurso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto interno, no se pudo realizar la operación. ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error inesperado al realizar la operación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/cotizador-otros-ramos": {
+      "post": {
+        "tags": [
+          "Cotización otros ramos"
+        ],
+        "summary": "Cotizador Otros Ramos",
+        "operationId": "cotizarPorApi_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "medio_pago",
+                  "plan_pago"
+                ],
+                "type": "object",
+                "properties": {
+                  "numero_cotizacion": {
+                    "type": "integer",
+                    "description": "Número de cotización.",
+                    "format": "int64",
+                    "nullable": true,
+                    "example": 129445013
+                  },
+                  "fecha_desde": {
+                    "pattern": "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$",
+                    "type": "string",
+                    "description": "Fecha de la cotización (dd/MM/YYYY).",
+                    "example": "23/09/2021"
+                  },
+                  "fecha_hasta": {
+                    "pattern": "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$",
+                    "type": "string",
+                    "description": "Fecha de finalización de cobertura (dd/MM/YYYY).",
+                    "nullable": true,
+                    "example": "23/09/2021"
+                  },
+                  "codigo_ramo": {
+                    "type": "integer",
+                    "description": "Código que representa el ramo a aplicar en la cotización realizada",
+                    "format": "int32",
+                    "example": 8,
+                    "externalDocs": {
+                      "description": "Los códigos existentes pueden encontrarse aquí",
+                      "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getRamoProductoApiHabilitadosCotizar"
+                    }
+                  },
+                  "codigo_producto": {
+                    "type": "string",
+                    "description": "Código que representa el producto a aplicar en la cotización realizada",
+                    "example": "80057",
+                    "externalDocs": {
+                      "description": "Los códigos existentes pueden encontrarse aquí",
+                      "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getRamoProductoApiHabilitadosCotizar"
+                    }
+                  },
+                  "calculo": {
+                    "type": "string",
+                    "description": "Código que representa el calculo de la cotización (por defecto es N: Normal).",
+                    "nullable": true,
+                    "example": "N"
+                  },
+                  "facturacion": {
+                    "type": "string",
+                    "description": "Código que representa la facturación a aplicar en la cotización (por defecto es I: Individual).",
+                    "nullable": true,
+                    "example": "I"
+                  },
+                  "vigencia": {
+                    "type": "string",
+                    "description": "Código que representa la vigencia a aplicar en la cotización realizada",
+                    "nullable": true,
+                    "example": "I",
+                    "externalDocs": {
+                      "description": "Los códigos existentes pueden encontrarse aquí",
+                      "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getVigencias"
+                    }
+                  },
+                  "descuento_comision": {
+                    "maximum": 5,
+                    "type": "number",
+                    "description": "Descuento a aplicar en la cotización sobre la comisión del Productor.",
+                    "format": "double",
+                    "nullable": true,
+                    "example": 5
+                  },
+                  "descuento_prima": {
+                    "maximum": 15,
+                    "minimum": -20,
+                    "type": "number",
+                    "description": "Descuento a aplicar sobre la prima.",
+                    "format": "double",
+                    "nullable": true,
+                    "example": 10
+                  },
+                  "medio_pago": {
+                    "type": "integer",
+                    "description": "Medios de pago habilitados, 1- Efectivo o 2- Débito.",
+                    "format": "int32",
+                    "example": 1,
+                    "enum": [
+                      1,
+                      2
+                    ]
+                  },
+                  "derecho_emision": {
+                    "type": "integer",
+                    "description": "Código que representa el derecho de emision de la cotización.",
+                    "format": "int32",
+                    "nullable": true
+                  },
+                  "moneda": {
+                    "type": "string",
+                    "description": "Código que representa la moneda de la cotización. 01- PESOS o 02- DOLAR.",
+                    "example": "01",
+                    "enum": [
+                      "01",
+                      "02"
+                    ]
+                  },
+                  "plan_pago": {
+                    "type": "integer",
+                    "description": "Código que representa el plan de pago a aplicar en la cotización realizada (depende del  valor de vigencia).",
+                    "format": "int32",
+                    "example": 12,
+                    "enum": [
+                      1,
+                      2,
+                      3,
+                      4,
+                      5,
+                      6,
+                      7,
+                      8,
+                      9,
+                      10,
+                      11,
+                      12
+                    ]
+                  },
+                  "localidad_solicitante": {
+                    "type": "string",
+                    "description": "Codigo que representa la localidad del solicitante a aplicar en la cotización.",
+                    "nullable": true
+                  },
+                  "plan": {
+                    "type": "string",
+                    "description": "Código que representa el plan a aplicar en la cotización realizada",
+                    "nullable": true,
+                    "example": "100",
+                    "externalDocs": {
+                      "description": "Los códigos existentes pueden encontrarse aquí",
+                      "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getPlanes"
+                    }
+                  },
+                  "epp": {
+                    "type": "boolean",
+                    "description": "Indica si la emisión de esta cotización se hará en la modalidad de Emisión Post Pago. Solo habilitado en productos específicos.",
+                    "example": true
+                  },
+                  "contratante": {
+                    "required": [
+                      "condicion_iva"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "Número de identificación personal, ya sea para DNI, PA.",
+                        "format": "int32",
+                        "nullable": true,
+                        "example": 34769948
+                      },
+                      "tipo_id": {
+                        "type": "string",
+                        "description": "Tipo de identificación personal.",
+                        "nullable": true,
+                        "example": "DNI",
+                        "enum": [
+                          "DNI",
+                          "PA"
+                        ]
+                      },
+                      "cuit": {
+                        "type": "string",
+                        "description": "Número de CUIT del contratante en caso de no ser consumidor final.",
+                        "nullable": true,
+                        "example": "23347699489"
+                      },
+                      "nombre": {
+                        "type": "string",
+                        "description": "Nombre de la persona contratante.",
+                        "nullable": true,
+                        "example": "Juan"
+                      },
+                      "apellido": {
+                        "type": "string",
+                        "description": "Apellido de la persona contratante.",
+                        "nullable": true,
+                        "example": "Perez"
+                      },
+                      "razon_social": {
+                        "type": "string",
+                        "description": "Razón Social del contratante en caso de no ser persona fisica.",
+                        "nullable": true,
+                        "example": "21"
+                      },
+                      "condicion_iva": {
+                        "type": "string",
+                        "description": "Condición de IVA. Indica si es: INSCRIPTO, CONSUMIDOR FINAL, EXENTO ACTIVIDAD, INSCRIPTO (R.18/97), EXENTO DECRETO, MONOTRIBUTO, NO CATEGORIZADO, VUELCO SOCIOS, NO ALCANZADO",
+                        "nullable": true,
+                        "example": "CF",
+                        "enum": [
+                          "IN",
+                          "CF",
+                          "EA",
+                          "IR",
+                          "ED",
+                          "MO",
+                          "NC",
+                          "0",
+                          "NA"
+                        ]
+                      },
+                      "localidad": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "matricula": {
+                        "type": "string",
+                        "description": "Identificación de un cliente existente dentro de Federación Patronal Seguros",
+                        "nullable": true,
+                        "example": "1125554"
+                      },
+                      "nacionalidad": {
+                        "type": "string"
+                      }
+                    },
+                    "description": "Datos del contratante asociado a la cotización."
+                  },
+                  "bienes": {
+                    "type": "array",
+                    "description": "Coleccion de datos y coberturas de bienes asociado a la cotizacion",
+                    "nullable": true,
+                    "items": {
+                      "required": [
+                        "coberturas",
+                        "codigo_bien",
+                        "datos"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "codigo_bien": {
+                          "type": "integer",
+                          "description": "Código que representa el bien a aplicar en la cotización realizada",
+                          "format": "int32",
+                          "nullable": true,
+                          "example": 1,
+                          "externalDocs": {
+                            "description": "Los códigos existentes pueden encontrarse aquí",
+                            "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getBienes"
+                          }
+                        },
+                        "datos": {
+                          "type": "array",
+                          "description": "Colección de Datos que pueden aplicar en la cotización realizada",
+                          "nullable": true,
+                          "externalDocs": {
+                            "description": "Los datos existentes pueden encontrarse aquí",
+                            "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getDatosParametricosCotizacion"
+                          },
+                          "items": {
+                            "required": [
+                              "codigo"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "codigo": {
+                                "type": "string",
+                                "description": "Codigo del dato"
+                              },
+                              "valor": {
+                                "type": "string",
+                                "description": "Valor del dato",
+                                "nullable": true,
+                                "externalDocs": {
+                                  "description": "Los valores posibles pueden encontrarse aquí",
+                                  "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getOpciones_1"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "coberturas": {
+                          "type": "array",
+                          "description": "Colección de coberturas que pueden aplicar en la cotización realizada",
+                          "nullable": true,
+                          "externalDocs": {
+                            "description": "Las coberturas existentes pueden encontrarse aquí",
+                            "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getBienesCoberturas_1"
+                          },
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "codigo_ramo_contable": {
+                                "type": "integer",
+                                "description": "Codigo de ramo contable para la cobertura",
+                                "format": "int32",
+                                "nullable": true
+                              },
+                              "codigo_cobertura": {
+                                "type": "string",
+                                "description": "Codigo de cobertura",
+                                "nullable": true
+                              },
+                              "suma_asegurada": {
+                                "type": "number",
+                                "description": "Suma asegurada para la cobertura",
+                                "format": "double",
+                                "nullable": true
+                              },
+                              "cantidad": {
+                                "type": "integer",
+                                "description": "Cantidad para la cobertura",
+                                "format": "int32",
+                                "nullable": true
+                              }
+                            },
+                            "description": "Colección de coberturas que pueden aplicar en la cotización realizada",
+                            "nullable": true,
+                            "externalDocs": {
+                              "description": "Las coberturas existentes pueden encontrarse aquí",
+                              "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getBienesCoberturas_1"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "producto_modular": {
+                    "required": [
+                      "cant_modulos",
+                      "codigo_producto",
+                      "fecha_nacimiento"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "cant_modulos": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Cantidad de módulos contratados.\r\nLa cantidad máxima permitida por cotización es de 10 módulos, la cantidad máxima total por cliente es de 50 módulos vigentes.\r\nProducto Sepelio Modular(370002) admite máximo un módulo por cotización.",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "codigo_producto": {
+                        "type": "string",
+                        "description": "Código del producto modular asociado a la cotización. Los productos permitidos son Vida Modular(190001), Salud Modular(360011), Robo Identidad Modular(70304) y Sepelio Modular(370002).",
+                        "enum": [
+                          "190001",
+                          "360011",
+                          "70304",
+                          "370002"
+                        ],
+                        "example": 190001
+                      },
+                      "fecha_nacimiento": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Fecha de nacimiento del contratante (dd/MM/YYYY)."
+                      },
+                      "edad": {
+                        "type": "integer",
+                        "format": "int32",
+                        "readOnly": true
+                      }
+                    },
+                    "description": "Datos del producto modular asociado a la cotización."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Operacion existosa",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sucursal": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "numero_cotizacion": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "consecutivo": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "fecha_desde": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "fecha_hasta": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "codigo_ramo": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "codigo_producto": {
+                      "type": "string"
+                    },
+                    "calculo": {
+                      "type": "string"
+                    },
+                    "facturacion": {
+                      "type": "string"
+                    },
+                    "vigencia": {
+                      "type": "string"
+                    },
+                    "descuento_comision": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "descuento_prima": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "medio_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "derecho_emision": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "moneda": {
+                      "type": "string"
+                    },
+                    "plan_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "localidad_solicitante": {
+                      "type": "string"
+                    },
+                    "facultativo": {
+                      "type": "boolean"
+                    },
+                    "imprime_poliza": {
+                      "type": "boolean"
+                    },
+                    "atencion_mostrador": {
+                      "type": "boolean"
+                    },
+                    "epp": {
+                      "type": "boolean"
+                    },
+                    "refacturaciones": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "contratante": {
+                      "required": [
+                        "condicion_iva"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "Número de identificación personal, ya sea para DNI, PA.",
+                          "format": "int32",
+                          "nullable": true,
+                          "example": 34769948
+                        },
+                        "tipo_id": {
+                          "type": "string",
+                          "description": "Tipo de identificación personal.",
+                          "nullable": true,
+                          "example": "DNI",
+                          "enum": [
+                            "DNI",
+                            "PA"
+                          ]
+                        },
+                        "cuit": {
+                          "type": "string",
+                          "description": "Número de CUIT del contratante en caso de no ser consumidor final.",
+                          "nullable": true,
+                          "example": "23347699489"
+                        },
+                        "nombre": {
+                          "type": "string",
+                          "description": "Nombre de la persona contratante.",
+                          "nullable": true,
+                          "example": "Juan"
+                        },
+                        "apellido": {
+                          "type": "string",
+                          "description": "Apellido de la persona contratante.",
+                          "nullable": true,
+                          "example": "Perez"
+                        },
+                        "razon_social": {
+                          "type": "string",
+                          "description": "Razón Social del contratante en caso de no ser persona fisica.",
+                          "nullable": true,
+                          "example": "21"
+                        },
+                        "condicion_iva": {
+                          "type": "string",
+                          "description": "Condición de IVA. Indica si es: INSCRIPTO, CONSUMIDOR FINAL, EXENTO ACTIVIDAD, INSCRIPTO (R.18/97), EXENTO DECRETO, MONOTRIBUTO, NO CATEGORIZADO, VUELCO SOCIOS, NO ALCANZADO",
+                          "nullable": true,
+                          "example": "CF",
+                          "enum": [
+                            "IN",
+                            "CF",
+                            "EA",
+                            "IR",
+                            "ED",
+                            "MO",
+                            "NC",
+                            "0",
+                            "NA"
+                          ]
+                        },
+                        "localidad": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "matricula": {
+                          "type": "string",
+                          "description": "Identificación de un cliente existente dentro de Federación Patronal Seguros",
+                          "nullable": true,
+                          "example": "1125554"
+                        },
+                        "nacionalidad": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "bienes": {
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "coberturas",
+                          "codigo_bien",
+                          "datos"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "codigo_bien": {
+                            "type": "integer",
+                            "description": "Código que representa el bien a aplicar en la cotización realizada",
+                            "format": "int32",
+                            "nullable": true,
+                            "example": 1,
+                            "externalDocs": {
+                              "description": "Los códigos existentes pueden encontrarse aquí",
+                              "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getBienes"
+                            }
+                          },
+                          "datos": {
+                            "type": "array",
+                            "description": "Colección de Datos que pueden aplicar en la cotización realizada",
+                            "nullable": true,
+                            "externalDocs": {
+                              "description": "Los datos existentes pueden encontrarse aquí",
+                              "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getDatosParametricosCotizacion"
+                            },
+                            "items": {
+                              "required": [
+                                "codigo"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "codigo": {
+                                  "type": "string",
+                                  "description": "Codigo del dato"
+                                },
+                                "valor": {
+                                  "type": "string",
+                                  "description": "Valor del dato",
+                                  "nullable": true,
+                                  "externalDocs": {
+                                    "description": "Los valores posibles pueden encontrarse aquí",
+                                    "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getOpciones_1"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "coberturas": {
+                            "type": "array",
+                            "description": "Colección de coberturas que pueden aplicar en la cotización realizada",
+                            "nullable": true,
+                            "externalDocs": {
+                              "description": "Las coberturas existentes pueden encontrarse aquí",
+                              "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getBienesCoberturas_1"
+                            },
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "codigo_ramo_contable": {
+                                  "type": "integer",
+                                  "description": "Codigo de ramo contable para la cobertura",
+                                  "format": "int32",
+                                  "nullable": true
+                                },
+                                "codigo_cobertura": {
+                                  "type": "string",
+                                  "description": "Codigo de cobertura",
+                                  "nullable": true
+                                },
+                                "suma_asegurada": {
+                                  "type": "number",
+                                  "description": "Suma asegurada para la cobertura",
+                                  "format": "double",
+                                  "nullable": true
+                                },
+                                "cantidad": {
+                                  "type": "integer",
+                                  "description": "Cantidad para la cobertura",
+                                  "format": "int32",
+                                  "nullable": true
+                                }
+                              },
+                              "description": "Colección de coberturas que pueden aplicar en la cotización realizada",
+                              "nullable": true,
+                              "externalDocs": {
+                                "description": "Las coberturas existentes pueden encontrarse aquí",
+                                "url": "https://api-sandbox.fedpat.com.ar/documentacion-productos.html#tag/Producto/operation/getBienesCoberturas_1"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "planes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "codigo": {
+                            "type": "string"
+                          },
+                          "descripcion": {
+                            "type": "string"
+                          },
+                          "premio_ramo": {
+                            "type": "number",
+                            "format": "double"
+                          },
+                          "premio_total": {
+                            "type": "number",
+                            "format": "double"
+                          },
+                          "prima_tarifa": {
+                            "type": "number",
+                            "format": "double"
+                          },
+                          "in_exclusion": {
+                            "type": "string"
+                          },
+                          "monto_cuota_total": {
+                            "type": "number",
+                            "format": "double"
+                          },
+                          "monto_pago_contado": {
+                            "type": "number",
+                            "format": "double"
+                          }
+                        }
+                      }
+                    },
+                    "producto_modular": {
+                      "required": [
+                        "cant_modulos",
+                        "codigo_producto",
+                        "fecha_nacimiento"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "cant_modulos": {
+                          "type": "integer",
+                          "format": "int32",
+                          "description": "Cantidad de módulos contratados.\r\nLa cantidad máxima permitida por cotización es de 10 módulos, la cantidad máxima total por cliente es de 50 módulos vigentes.\r\nProducto Sepelio Modular(370002) admite máximo un módulo por cotización.",
+                          "example": 0,
+                          "default": 0
+                        },
+                        "codigo_producto": {
+                          "type": "string",
+                          "description": "Código del producto modular asociado a la cotización. Los productos permitidos son Vida Modular(190001), Salud Modular(360011), Robo Identidad Modular(70304) y Sepelio Modular(370002).",
+                          "enum": [
+                            "190001",
+                            "360011",
+                            "70304",
+                            "370002"
+                          ],
+                          "example": 190001
+                        },
+                        "fecha_nacimiento": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Fecha de nacimiento del contratante (dd/MM/YYYY)."
+                        },
+                        "edad": {
+                          "type": "integer",
+                          "format": "int32",
+                          "readOnly": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas, el token ingresado no es correcto",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso restringido, no se poseen los permisos para acceder al recurso",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto interno, no se pudo realizar la operación. ",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error inesperado al realizar la operación",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/cotizador-automotores/{numeroCotizacion}": {
+      "get": {
+        "tags": [
+          "Cotización auto"
+        ],
+        "summary": "Obtiene cotización del ramo automotores",
+        "operationId": "getCotizacion",
+        "parameters": [
+          {
+            "name": "numeroCotizacion",
+            "in": "path",
+            "description": "Número de cotización a obtener",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "numero_cotizacion": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "fecha_desde": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "fecha_hasta": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "productor": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "descuento_comision": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "medio_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "plan_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "provincia": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "razon_social": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "vehiculo": {
+                      "required": [
+                        "anio",
+                        "infoauto",
+                        "localidad_de_guarda",
+                        "tipo_vehiculo"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "infoauto": {
+                          "type": "string",
+                          "description": "Código de infoauto que representa la marca y el modelo del vehiculo a cotizar.",
+                          "example": "170641"
+                        },
+                        "anio": {
+                          "type": "string",
+                          "description": "Año modelo/fabricación del vehículo a cotizar.",
+                          "example": "2018"
+                        },
+                        "tipo_vehiculo": {
+                          "type": "integer",
+                          "description": "Código que representa el tipo de vehículo a cotizar. Los códigos válidos están disponibles en el microservicio vehículos.",
+                          "format": "int32",
+                          "example": 46
+                        },
+                        "alarma": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo a cotizar posee alarma",
+                          "example": true
+                        },
+                        "rastreador": {
+                          "type": "integer",
+                          "description": "Código que representa, en caso de existir, el rastreador satelital que posee el vehículo. Los códigos válidos están disponibles en el servicio rastreadores Vehiculares.",
+                          "format": "int32",
+                          "example": 46
+                        },
+                        "gnc": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo cuenta con equipo de GNC.",
+                          "example": false
+                        },
+                        "volcador": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo es volcador.",
+                          "example": false
+                        },
+                        "suma_asegurada": {
+                          "type": "number",
+                          "description": "Suma asegurada del vehículo a cubrir por las coberturas de casco.",
+                          "format": "double",
+                          "example": 1200000
+                        },
+                        "localidad_de_guarda": {
+                          "type": "integer",
+                          "description": "Código que representa la localidad de guarda del vehículo. Los códigos válidos están disponibles en el microservicio localidades.",
+                          "format": "int32",
+                          "example": 375,
+                          "externalDocs": {
+                            "description": "Código que representa la localidad de guarda del vehículo. Los códigos válidos están disponibles en el microservicio localidades.",
+                            "url": ""
+                          }
+                        }
+                      }
+                    },
+                    "coberturas": {
+                      "type": "object",
+                      "properties": {
+                        "rc_conosur": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "casco_conosur": {
+                          "type": "boolean"
+                        },
+                        "petroliferos_aeropuertos": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "grua": {
+                          "type": "boolean"
+                        },
+                        "taller_exclusivo": {
+                          "type": "boolean"
+                        },
+                        "interasegurado": {
+                          "type": "boolean"
+                        },
+                        "servicio_petrolero": {
+                          "type": "boolean"
+                        },
+                        "gastos_remediacion": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "planes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "codigo": {
+                                "type": "string"
+                              },
+                              "descripcion": {
+                                "type": "string"
+                              },
+                              "premio_automotor": {
+                                "type": "number",
+                                "description": "Premio generado y calculado de la cotización.",
+                                "format": "double",
+                                "example": 32544.5
+                              },
+                              "premio_total": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "prima_tarifa": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "in_exclusion": {
+                                "type": "string"
+                              },
+                              "monto_cuota_total": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "monto_pago_contado": {
+                                "type": "number",
+                                "format": "double"
+                              }
+                            }
+                          }
+                        },
+                        "franquicia": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "ajuste_automatico": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "rc_sublimites": {
+                          "type": "boolean"
+                        },
+                        "rc_ampliada": {
+                          "type": "integer",
+                          "format": "int32"
+                        }
+                      }
+                    },
+                    "contratante": {
+                      "required": [
+                        "condicion_iva"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "Número de identificación personal, ya sea para DNI, PA.",
+                          "format": "int32",
+                          "example": 34769948
+                        },
+                        "tipo_id": {
+                          "type": "string",
+                          "description": "Tipo de identificación personal.",
+                          "example": "DNI",
+                          "enum": [
+                            "DNI",
+                            "PA (Pasaporte)"
+                          ]
+                        },
+                        "cuit": {
+                          "type": "string",
+                          "description": "Número de CUIT del contratante en caso de no ser consumidor final.",
+                          "example": "23347699489"
+                        },
+                        "nombre": {
+                          "type": "string",
+                          "description": "Nombre de la persona contratante.",
+                          "example": "Juan"
+                        },
+                        "apellido": {
+                          "type": "string",
+                          "description": "Apellido de la persona contratante.",
+                          "example": "Perez"
+                        },
+                        "razon_social": {
+                          "type": "string",
+                          "description": "Razón Social del contratante en caso de no ser persona fisica.",
+                          "example": "21"
+                        },
+                        "condicion_iva": {
+                          "type": "string",
+                          "description": "Condición de IVA. Indica si es: INSCRIPTO, CONSUMIDOR FINAL, EXENTO ACTIVIDAD, INSCRIPTO (R.18/97), EXENTO DECRETO, MONOTRIBUTO, NO CATEGORIZADO, VUELCO SOCIOS, NO ALCANZADO",
+                          "example": "CF",
+                          "enum": [
+                            "IN",
+                            "CF",
+                            "EA",
+                            "IR",
+                            "ED",
+                            "MO",
+                            "NC",
+                            "0",
+                            "NA"
+                          ]
+                        },
+                        "localidad": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "matricula": {
+                          "type": "string",
+                          "description": "Identificación de un cliente existente dentro de Federación Patronal Seguros S.A.",
+                          "example": "1125554"
+                        },
+                        "nacionalidad": {
+                          "type": "string",
+                          "readOnly": true
+                        }
+                      }
+                    },
+                    "accesorios": {
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "codigo",
+                          "suma_asegurada"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "codigo": {
+                            "type": "integer",
+                            "description": "Codigo que representa el accesorio.",
+                            "format": "int32"
+                          },
+                          "suma_asegurada": {
+                            "type": "number",
+                            "description": "Monto a aplicar en el accesorio",
+                            "format": "double"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "default": []
+          }
+        ],
+        "x-auth-type": "Application & Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2"
+          ],
+          "optional": false
+        }
+      }
+    },
+    "/cotizador-automotores/": {
+      "post": {
+        "tags": [
+          "Cotización auto"
+        ],
+        "summary": "Cotizador Automotores",
+        "operationId": "cotizarPorApi",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "contratante",
+                  "fecha_desde",
+                  "medio_pago",
+                  "razon_social",
+                  "vehiculo"
+                ],
+                "type": "object",
+                "properties": {
+                  "numero_cotizacion": {
+                    "type": "integer",
+                    "description": "Número de cotización.",
+                    "format": "int64",
+                    "example": 129445013
+                  },
+                  "fecha_desde": {
+                    "type": "string",
+                    "description": "Fecha de la cotización (dd/MM/YYYY).",
+                    "example": "23/09/2020"
+                  },
+                  "descuento_comision": {
+                    "maximum": 5,
+                    "type": "integer",
+                    "description": "Descuento a aplicar en la cotización sobre la comisión del Productor.",
+                    "format": "int32",
+                    "example": 5
+                  },
+                  "medio_pago": {
+                    "type": "integer",
+                    "description": "Medios de pago habilitados, 1- Efectivo o 2- Débito Automático (por tarjeta de crédito o CBU que se especificarán en la emisión).",
+                    "format": "int32",
+                    "example": 1,
+                    "enum": [
+                      1,
+                      2
+                    ],
+                    "default": 1
+                  },
+                  "pago_contado": {
+                    "type": "boolean",
+                    "description": "Permite cotizar una operación en un solo PAGO a través de Debito Automático (CBU o Tarjeta de Crédito).",
+                    "example": false,
+                    "default": false
+                  },
+                  "razon_social": {
+                    "type": "integer",
+                    "description": "Código que representa el tipo de personeria del contratatante . Los códigos válidos están disponibles en el servicio tipo Personeria.",
+                    "format": "int32"
+                  },
+                  "cliente_nuevo": {
+                    "type": "boolean",
+                    "description": "Beneficio especial de descuento para cotizar operaciones. Se debe cumplir los requisitos comerciales vigentes definidos por la Compañia para este descuento especial. Por más información consultar con su canal comercial habitual.",
+                    "example": false,
+                    "default": false
+                  },
+                  "refacturaciones": {
+                    "type": "integer",
+                    "description": "Indica la cantidad de refacturaciones de la operación a cotizar.\r\n2= SEMESTRAL ; 12= MENSUAL.\r\nSe validará este dato con las mismas condiciones comerciales vigentes para cada tipo de facturación definidos en Self Productores. Por más información consultar con su canal comercial habitual.",
+                    "format": "int32",
+                    "enum": [
+                      2,
+                      12
+                    ]
+                  },
+                  "contratante": {
+                    "required": [
+                      "condicion_iva"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "Número de identificación personal, ya sea para DNI, PA.",
+                        "format": "int32",
+                        "example": 34769948
+                      },
+                      "tipo_id": {
+                        "type": "string",
+                        "description": "Tipo de identificación personal.",
+                        "example": "DNI",
+                        "enum": [
+                          "DNI",
+                          "PA (Pasaporte)"
+                        ]
+                      },
+                      "cuit": {
+                        "type": "string",
+                        "description": "Número de CUIT del contratante en caso de no ser consumidor final.",
+                        "example": "23347699489"
+                      },
+                      "nombre": {
+                        "type": "string",
+                        "description": "Nombre de la persona contratante.",
+                        "example": "Juan"
+                      },
+                      "apellido": {
+                        "type": "string",
+                        "description": "Apellido de la persona contratante.",
+                        "example": "Perez"
+                      },
+                      "razon_social": {
+                        "type": "string",
+                        "description": "Razón Social del contratante en caso de no ser persona fisica.",
+                        "example": "21"
+                      },
+                      "condicion_iva": {
+                        "type": "string",
+                        "description": "Condición de IVA. Indica si es: INSCRIPTO, CONSUMIDOR FINAL, EXENTO ACTIVIDAD, INSCRIPTO (R.18/97), EXENTO DECRETO, MONOTRIBUTO, NO CATEGORIZADO, VUELCO SOCIOS, NO ALCANZADO",
+                        "example": "CF",
+                        "enum": [
+                          "IN",
+                          "CF",
+                          "EA",
+                          "IR",
+                          "ED",
+                          "MO",
+                          "NC",
+                          "0",
+                          "NA"
+                        ]
+                      },
+                      "localidad": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "matricula": {
+                        "type": "string",
+                        "description": "Identificación de un cliente existente dentro de Federación Patronal Seguros S.A.",
+                        "example": "1125554"
+                      },
+                      "nacionalidad": {
+                        "type": "string",
+                        "readOnly": true
+                      }
+                    }
+                  },
+                  "vehiculo": {
+                    "required": [
+                      "anio",
+                      "infoauto",
+                      "localidad_de_guarda",
+                      "tipo_vehiculo"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "infoauto": {
+                        "type": "string",
+                        "description": "Código de infoauto que representa la marca y el modelo del vehiculo a cotizar.",
+                        "example": "170641"
+                      },
+                      "anio": {
+                        "type": "string",
+                        "description": "Año modelo/fabricación del vehículo a cotizar.",
+                        "example": "2018"
+                      },
+                      "tipo_vehiculo": {
+                        "type": "integer",
+                        "description": "Código que representa el tipo de vehículo a cotizar. Los códigos válidos están disponibles en el microservicio vehículos.",
+                        "format": "int32",
+                        "example": 46
+                      },
+                      "alarma": {
+                        "type": "boolean",
+                        "description": "Indica si el vehículo a cotizar posee alarma",
+                        "example": true
+                      },
+                      "rastreador": {
+                        "type": "integer",
+                        "description": "Código que representa, en caso de existir, el rastreador satelital que posee el vehículo. Los códigos válidos están disponibles en el servicio rastreadores Vehiculares.",
+                        "format": "int32",
+                        "example": 46,
+                        "externalDocs": {
+                          "description": "Código que representa, en caso de existir, el rastreador satelital que posee el vehículo. Los códigos válidos están disponibles en el servicio rastreadores Vehiculares",
+                          "url": ""
+                        }
+                      },
+                      "gnc": {
+                        "type": "boolean",
+                        "description": "Indica si el vehículo cuenta con equipo de GNC.",
+                        "example": false
+                      },
+                      "volcador": {
+                        "type": "boolean",
+                        "description": "Indica si el vehículo es volcador.",
+                        "example": false
+                      },
+                      "suma_asegurada": {
+                        "type": "number",
+                        "description": "Suma asegurada del vehículo a cubrir por las coberturas de casco.",
+                        "format": "double",
+                        "example": 1200000
+                      },
+                      "localidad_de_guarda": {
+                        "type": "integer",
+                        "description": "Código que representa la localidad de guarda del vehículo. Los códigos válidos están disponibles en el microservicio localidades.",
+                        "format": "int32",
+                        "example": 375
+                      }
+                    }
+                  },
+                  "coberturas": {
+                    "type": "object",
+                    "properties": {
+                      "rc_conosur": {
+                        "type": "integer",
+                        "description": "Representa la ampliación de la suma en la cobertura Responsabilidad Civil Conosur. 1- 200.000 dólares, 2- 500.000 dólares, 3- 1.000.000 dólares, y 99- no posee.",
+                        "format": "int32",
+                        "example": 99,
+                        "enum": [
+                          1,
+                          2,
+                          3,
+                          99
+                        ]
+                      },
+                      "casco_conosur": {
+                        "type": "boolean",
+                        "description": "Indica si se cubre el casco del vehículo en países limítrofes, dentro de los convenios de la compañía (sólo para vehículos particulares).",
+                        "example": true
+                      },
+                      "petroliferos_aeropuertos": {
+                        "type": "integer",
+                        "description": "Indica si se incluye texto adicional de Campos Petroliferos y/o Aeroportuarios en las condiciones particulares de una poliza: 5 - Declara ingreso, 99 - No Corresponde .",
+                        "format": "int32",
+                        "example": 99,
+                        "enum": [
+                          5,
+                          99
+                        ],
+                        "default": 99
+                      },
+                      "grua": {
+                        "type": "boolean",
+                        "description": "Indica si tendrá acceso al servicio de grúa (si corresponde). Se puede validar si corresponde, en el servicio vehículos.",
+                        "example": true,
+                        "default": true
+                      },
+                      "taller_exclusivo": {
+                        "type": "boolean",
+                        "description": "Indica si ante un siniestro de daños parciales tendrá atención priorizada en talleres exclusivos de Federación Patronal Seguros S.A. o podrá elegir talleres definidos por el asegurado al momento del siniestro.",
+                        "example": false,
+                        "default": false
+                      },
+                      "interasegurado": {
+                        "type": "boolean",
+                        "description": "Beneficio especial ante un siniestro frente a un tercero también asegurado en Federación Patronal Seguros S.A. ",
+                        "example": true
+                      },
+                      "servicio_petrolero": {
+                        "type": "boolean",
+                        "description": "Indica si el vehículo cotizado presta servicios a empresas relacionadas al ámbito petrolífero",
+                        "example": true,
+                        "default": false
+                      },
+                      "gastos_remediacion": {
+                        "type": "integer",
+                        "description": "Gastos de remediación asociados al transporte de sustancias peligrosas. 1- $16.000.000, 2- $24.600.000, 3- $175.000.000, 99- NO APLICA.",
+                        "format": "int32",
+                        "example": 99,
+                        "enum": [
+                          1,
+                          2,
+                          3,
+                          99
+                        ],
+                        "default": 99
+                      },
+                      "ajuste_automatico": {
+                        "maximum": 100,
+                        "type": "integer",
+                        "description": "Valor porcentual que representa el ajuste automático a aplicar sobre la suma asegurada de casco. Sin Ajuste = 99",
+                        "format": "int32",
+                        "example": 20,
+                        "enum": [
+                          10,
+                          20,
+                          30,
+                          40,
+                          50,
+                          60,
+                          70,
+                          80,
+                          90,
+                          99,
+                          100
+                        ]
+                      },
+                      "rc_ampliada": {
+                        "type": "integer",
+                        "description": "Este adicional permite incrementar la Suma Asegurada de la cobertura de Responsabilidad Civil Voluntaria de acuerdo al valor porcentual indicado.\r\n99 - Sin Ajuste, 50 - 50% de ajuste , 100 - 100% de ajuste, 150 – 150% de ajuste.",
+                        "format": "int32",
+                        "enum": [
+                          50,
+                          99,
+                          100,
+                          150
+                        ],
+                        "default": 99
+                      },
+                      "plan": {
+                        "type": "string",
+                        "description": "Plan de cobertura a cotizar. Para el valor 'null' se cotizarán todos los planes posibles. Planes:\n* A4-RESP.CIVIL LIMITE MAXIMO UNICA\n* B-RC.PERD TOTAL  Accid. Inc. y Robo\n* B1-RC.PERD TOTAL  Inc. y Robo\n* B2-RC. PERD TOTAL INC.\n* C-RC.P.T Accid. y P.TyP Inc. y Robo\n* C1-RC. P.TOTAL y PARCIAL Inc. y Robo\n* CF-RC.PT Ac. y P.TyP Inc. y Robo FULL\n* E-CUARENTENA\n* E1-INCENDIO Y  ROBO TOTAL EN GARAGE\n* LB-RC.P.T Acc, P.TyP Inc. y R.,RP TOT.\n* LB1-RC P.TyP Inc. y R.,RP Amp  TOT.\n* TD-TODO RIESGO CON FRANQUICIA, TD1-TODO RIESGO SIN FRANQUICIA\n* TD3-TODO RIESGO CON FRANQUICIA FIJA.",
+                        "example": "TD",
+                        "enum": [
+                          "A4",
+                          "B",
+                          "B1",
+                          "B2",
+                          "C",
+                          "C1",
+                          "CF",
+                          "E",
+                          "E1",
+                          "LB",
+                          "LB1",
+                          "TD",
+                          "TD1",
+                          "TD3",
+                          "null"
+                        ]
+                      },
+                      "franquicia": {
+                        "type": "integer",
+                        "description": "Franquicia a aplicar a cargo del asegurado en el caso de cotizar planes de todo riesgo con franquicia TD3. Los códigos válidos de franquicia y sus montos están en el servicio vehículos.",
+                        "format": "int32",
+                        "example": 99
+                      }
+                    },
+                    "description": "Coberturas a incluir para el cálculo de la cotización."
+                  },
+                  "producto_modular": {
+                    "required": [
+                      "cant_modulos",
+                      "codigo_producto",
+                      "fecha_nacimiento"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "cant_modulos": {
+                        "type": "integer",
+                        "description": "Cantidad de módulos contratados.\r\nLa cantidad máxima permitida por cotización es de 10 módulos, la cantidad máxima total por cliente es de 50 módulos vigentes.\r\nProducto Sepelio Modular(370002) admite máximo un módulo por cotización.",
+                        "format": "int32",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "codigo_producto": {
+                        "type": "string",
+                        "description": "Código del producto modular asociado a la cotización. Los productos permitidos son Vida Modular(190001), Salud Modular(360011), Robo Identidad Modular(70304) y Sepelio Modular(370002)",
+                        "example": "190001",
+                        "enum": [
+                          "190001",
+                          "360011",
+                          "70304",
+                          "370002"
+                        ]
+                      },
+                      "fecha_nacimiento": {
+                        "type": "string",
+                        "description": "Fecha de nacimiento del contratante (dd/MM/YYYY).",
+                        "example": "13/07/1998"
+                      },
+                      "edad": {
+                        "type": "integer",
+                        "format": "int32",
+                        "readOnly": true
+                      }
+                    },
+                    "description": "Datos del producto modular asociado a la cotización."
+                  },
+                  "asegura2": {
+                    "type": "array",
+                    "description": "Datos de productos multirrámicos asociados a la cotización. \n\nLos productos permitidos para automotores son:\n* (7 - 70301) PROTECCION DE IDENTIDAD\n* (8 - 80031) RC HECHOS PRIVADOS ASEGURA2 PLAN A\n* (8 - 80032) R.C. COMPR. ASEGURA2 PLAN A\n* (12 - 120330) ACCIDENTAL 365 PLAN A\n* (35 - 350001) AP FAMILIARES TRANSPORTADOS\n* (36 - 360012) A3 SALUD PROTEGIDA A\n\nComo máximo se pueden recibir 4 pares ramo-producto\n\n\nLos productos permitidos para motovehiculos son:\n* (7 - 70301) PROTECCION DE IDENTIDAD\n* (8 - 80031) RC HECHOS PRIVADOS ASEGURA2 PLAN A\n* (8 - 80032) R.C. COMPR. ASEGURA2 PLAN A\n",
+                    "items": {
+                      "required": [
+                        "producto",
+                        "ramo"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "ramo": {
+                          "type": "integer",
+                          "description": "Ramo del multirrámico asociado. Debe respetar los pares ramo-producto aceptados.",
+                          "format": "int32",
+                          "enum": [
+                            7,
+                            8,
+                            12,
+                            35,
+                            36
+                          ]
+                        },
+                        "producto": {
+                          "type": "string",
+                          "description": "Producto del multirrámico asociado. Debe respetar los pares ramo-producto aceptados.",
+                          "enum": [
+                            "70301",
+                            "80031",
+                            "80032",
+                            "120330",
+                            "350001",
+                            "360012"
+                          ]
+                        }
+                      },
+                      "description": "Datos de productos multirrámicos asociados a la cotización. \n\nLos productos permitidos para automotores son:\n* (7 - 70301) PROTECCION DE IDENTIDAD\n* (8 - 80031) RC HECHOS PRIVADOS ASEGURA2 PLAN A\n* (8 - 80032) R.C. COMPR. ASEGURA2 PLAN A\n* (12 - 120330) ACCIDENTAL 365 PLAN A\n* (35 - 350001) AP FAMILIARES TRANSPORTADOS\n* (36 - 360012) A3 SALUD PROTEGIDA A\n\nComo máximo se pueden recibir 4 pares ramo-producto\n\n\nLos productos permitidos para motovehiculos son:\n* (7 - 70301) PROTECCION DE IDENTIDAD\n* (8 - 80031) RC HECHOS PRIVADOS ASEGURA2 PLAN A\n* (8 - 80032) R.C. COMPR. ASEGURA2 PLAN A\n"
+                    }
+                  },
+                  "accesorio": {
+                    "type": "array",
+                    "description": "Datos de accesorios asociados a la cotización.",
+                    "items": {
+                      "required": [
+                        "codigo",
+                        "suma_asegurada"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "codigo": {
+                          "type": "integer",
+                          "description": "Codigo que representa el accesorio.",
+                          "format": "int32"
+                        },
+                        "suma_asegurada": {
+                          "type": "number",
+                          "description": "Monto a aplicar en el accesorio",
+                          "format": "double"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "numero_cotizacion": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "fecha_desde": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "fecha_hasta": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "productor": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "descuento_comision": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "medio_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "plan_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "provincia": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "razon_social": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "vehiculo": {
+                      "required": [
+                        "anio",
+                        "infoauto",
+                        "localidad_de_guarda",
+                        "tipo_vehiculo"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "infoauto": {
+                          "type": "string",
+                          "description": "Código de infoauto que representa la marca y el modelo del vehiculo a cotizar.",
+                          "example": "170641"
+                        },
+                        "anio": {
+                          "type": "string",
+                          "description": "Año modelo/fabricación del vehículo a cotizar.",
+                          "example": "2018"
+                        },
+                        "tipo_vehiculo": {
+                          "type": "integer",
+                          "description": "Código que representa el tipo de vehículo a cotizar. Los códigos válidos están disponibles en el microservicio vehículos.",
+                          "format": "int32",
+                          "example": 46
+                        },
+                        "alarma": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo a cotizar posee alarma",
+                          "example": true
+                        },
+                        "rastreador": {
+                          "type": "integer",
+                          "description": "Código que representa, en caso de existir, el rastreador satelital que posee el vehículo. Los códigos válidos están disponibles en el servicio rastreadores Vehiculares.",
+                          "format": "int32",
+                          "example": 46
+                        },
+                        "gnc": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo cuenta con equipo de GNC.",
+                          "example": false
+                        },
+                        "volcador": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo es volcador.",
+                          "example": false
+                        },
+                        "suma_asegurada": {
+                          "type": "number",
+                          "description": "Suma asegurada del vehículo a cubrir por las coberturas de casco.",
+                          "format": "double",
+                          "example": 1200000
+                        },
+                        "localidad_de_guarda": {
+                          "type": "integer",
+                          "description": "Código que representa la localidad de guarda del vehículo. Los códigos válidos están disponibles en el microservicio localidades.",
+                          "format": "int32",
+                          "example": 375
+                        }
+                      }
+                    },
+                    "coberturas": {
+                      "type": "object",
+                      "properties": {
+                        "rc_conosur": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "casco_conosur": {
+                          "type": "boolean"
+                        },
+                        "petroliferos_aeropuertos": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "grua": {
+                          "type": "boolean"
+                        },
+                        "taller_exclusivo": {
+                          "type": "boolean"
+                        },
+                        "interasegurado": {
+                          "type": "boolean"
+                        },
+                        "servicio_petrolero": {
+                          "type": "boolean"
+                        },
+                        "gastos_remediacion": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "planes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "codigo": {
+                                "type": "string"
+                              },
+                              "descripcion": {
+                                "type": "string"
+                              },
+                              "premio_automotor": {
+                                "type": "number",
+                                "description": "Premio generado y calculado de la cotización.",
+                                "format": "double",
+                                "example": 32544.5
+                              },
+                              "premio_total": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "prima_tarifa": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "in_exclusion": {
+                                "type": "string"
+                              },
+                              "monto_cuota_total": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "monto_pago_contado": {
+                                "type": "number",
+                                "format": "double"
+                              }
+                            }
+                          }
+                        },
+                        "franquicia": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "ajuste_automatico": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "rc_sublimites": {
+                          "type": "boolean"
+                        },
+                        "rc_ampliada": {
+                          "type": "integer",
+                          "format": "int32"
+                        }
+                      }
+                    },
+                    "contratante": {
+                      "required": [
+                        "condicion_iva"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "Número de identificación personal, ya sea para DNI, PA.",
+                          "format": "int32",
+                          "example": 34769948
+                        },
+                        "tipo_id": {
+                          "type": "string",
+                          "description": "Tipo de identificación personal.",
+                          "example": "DNI",
+                          "enum": [
+                            "DNI",
+                            "PA (Pasaporte)"
+                          ]
+                        },
+                        "cuit": {
+                          "type": "string",
+                          "description": "Número de CUIT del contratante en caso de no ser consumidor final.",
+                          "example": "23347699489"
+                        },
+                        "nombre": {
+                          "type": "string",
+                          "description": "Nombre de la persona contratante.",
+                          "example": "Juan"
+                        },
+                        "apellido": {
+                          "type": "string",
+                          "description": "Apellido de la persona contratante.",
+                          "example": "Perez"
+                        },
+                        "razon_social": {
+                          "type": "string",
+                          "description": "Razón Social del contratante en caso de no ser persona fisica.",
+                          "example": "21"
+                        },
+                        "condicion_iva": {
+                          "type": "string",
+                          "description": "Condición de IVA. Indica si es: INSCRIPTO, CONSUMIDOR FINAL, EXENTO ACTIVIDAD, INSCRIPTO (R.18/97), EXENTO DECRETO, MONOTRIBUTO, NO CATEGORIZADO, VUELCO SOCIOS, NO ALCANZADO",
+                          "example": "CF",
+                          "enum": [
+                            "IN",
+                            "CF",
+                            "EA",
+                            "IR",
+                            "ED",
+                            "MO",
+                            "NC",
+                            "0",
+                            "NA"
+                          ]
+                        },
+                        "localidad": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "matricula": {
+                          "type": "string",
+                          "description": "Identificación de un cliente existente dentro de Federación Patronal Seguros S.A.",
+                          "example": "1125554"
+                        },
+                        "nacionalidad": {
+                          "type": "string",
+                          "readOnly": true
+                        }
+                      }
+                    },
+                    "accesorios": {
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "codigo",
+                          "suma_asegurada"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "codigo": {
+                            "type": "integer",
+                            "description": "Codigo que representa el accesorio.",
+                            "format": "int32"
+                          },
+                          "suma_asegurada": {
+                            "type": "number",
+                            "description": "Monto a aplicar en el accesorio",
+                            "format": "double"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "default": []
+          }
+        ],
+        "x-auth-type": "Application & Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2"
+          ],
+          "optional": false
+        }
+      }
+    },
+    "/cotizador-automotores/{numeroCotizacion}/descuentos": {
+      "post": {
+        "tags": [
+          "Cotización auto"
+        ],
+        "summary": "Permite recotizar una determinada cotización aplicando beneficios",
+        "operationId": "aplicarDescuentos",
+        "parameters": [
+          {
+            "name": "numeroCotizacion",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "observacion"
+                ],
+                "type": "object",
+                "properties": {
+                  "comision_administrativa": {
+                    "maximum": 100,
+                    "minimum": -100,
+                    "type": "integer",
+                    "description": "Descuento a aplicar sobre la prima.",
+                    "format": "int32",
+                    "example": 10
+                  },
+                  "buen_resultado": {
+                    "maximum": 400,
+                    "minimum": 0,
+                    "type": "integer",
+                    "description": "Meses correspondientes al buen resultado.",
+                    "format": "int32",
+                    "example": 10
+                  },
+                  "plan": {
+                    "type": "string",
+                    "description": "Plan de cobertura a cotizar. Para el valor 'null' se cotizarán todos los planes posibles. Planes:\n* A4-RESP.CIVIL LIMITE MAXIMO UNICA\n* B-RC.PERD TOTAL  Accid. Inc. y Robo\n* B1-RC.PERD TOTAL  Inc. y Robo\n* B2-RC. PERD TOTAL INC.\n* C-RC.P.T Accid. y P.TyP Inc. y Robo\n* C1-RC. P.TOTAL y PARCIAL Inc. y Robo\n* CF-RC.PT Ac. y P.TyP Inc. y Robo FULL\n* E-CUARENTENA\n* E1-INCENDIO Y  ROBO TOTAL EN GARAGE\n* LB-RC.P.T Acc, P.TyP Inc. y R.,RP TOT.\n* LB1-RC P.TyP Inc. y R.,RP Amp  TOT.\n* TD-TODO RIESGO CON FRANQUICIA, TD1-TODO RIESGO SIN FRANQUICIA\n* TD3-TODO RIESGO CON FRANQUICIA FIJA.",
+                    "example": "TD",
+                    "enum": [
+                      "A4",
+                      "B",
+                      "B1",
+                      "B2",
+                      "C",
+                      "C1",
+                      "CF",
+                      "E",
+                      "E1",
+                      "LB",
+                      "LB1",
+                      "TD",
+                      "TD1",
+                      "TD3",
+                      "null"
+                    ]
+                  },
+                  "observacion": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operacion existosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "numero_cotizacion": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "fecha_desde": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "fecha_hasta": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "productor": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "descuento_comision": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "medio_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "plan_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "provincia": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "razon_social": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "vehiculo": {
+                      "required": [
+                        "anio",
+                        "infoauto",
+                        "localidad_de_guarda",
+                        "tipo_vehiculo"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "infoauto": {
+                          "type": "string",
+                          "description": "Código de infoauto que representa la marca y el modelo del vehiculo a cotizar.",
+                          "example": "170641"
+                        },
+                        "anio": {
+                          "type": "string",
+                          "description": "Año modelo/fabricación del vehículo a cotizar.",
+                          "example": "2018"
+                        },
+                        "tipo_vehiculo": {
+                          "type": "integer",
+                          "description": "Código que representa el tipo de vehículo a cotizar. Los códigos válidos están disponibles en el microservicio vehículos.",
+                          "format": "int32",
+                          "example": 46
+                        },
+                        "alarma": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo a cotizar posee alarma",
+                          "example": true
+                        },
+                        "rastreador": {
+                          "type": "integer",
+                          "description": "Código que representa, en caso de existir, el rastreador satelital que posee el vehículo. Los códigos válidos están disponibles en el servicio rastreadores Vehiculares.",
+                          "format": "int32",
+                          "example": 46
+                        },
+                        "gnc": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo cuenta con equipo de GNC.",
+                          "example": false
+                        },
+                        "volcador": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo es volcador.",
+                          "example": false
+                        },
+                        "suma_asegurada": {
+                          "type": "number",
+                          "description": "Suma asegurada del vehículo a cubrir por las coberturas de casco.",
+                          "format": "double",
+                          "example": 1200000
+                        },
+                        "localidad_de_guarda": {
+                          "type": "integer",
+                          "description": "Código que representa la localidad de guarda del vehículo. Los códigos válidos están disponibles en el microservicio localidades.",
+                          "format": "int32",
+                          "example": 375
+                        }
+                      }
+                    },
+                    "coberturas": {
+                      "type": "object",
+                      "properties": {
+                        "rc_conosur": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "casco_conosur": {
+                          "type": "boolean"
+                        },
+                        "petroliferos_aeropuertos": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "grua": {
+                          "type": "boolean"
+                        },
+                        "taller_exclusivo": {
+                          "type": "boolean"
+                        },
+                        "interasegurado": {
+                          "type": "boolean"
+                        },
+                        "servicio_petrolero": {
+                          "type": "boolean"
+                        },
+                        "gastos_remediacion": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "planes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "codigo": {
+                                "type": "string"
+                              },
+                              "descripcion": {
+                                "type": "string"
+                              },
+                              "premio_automotor": {
+                                "type": "number",
+                                "description": "Premio generado y calculado de la cotización.",
+                                "format": "double",
+                                "example": 32544.5
+                              },
+                              "premio_total": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "prima_tarifa": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "in_exclusion": {
+                                "type": "string"
+                              },
+                              "monto_cuota_total": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "monto_pago_contado": {
+                                "type": "number",
+                                "format": "double"
+                              }
+                            }
+                          }
+                        },
+                        "franquicia": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "ajuste_automatico": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "rc_sublimites": {
+                          "type": "boolean"
+                        },
+                        "rc_ampliada": {
+                          "type": "integer",
+                          "format": "int32"
+                        }
+                      }
+                    },
+                    "contratante": {
+                      "required": [
+                        "condicion_iva"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "Número de identificación personal, ya sea para DNI, PA.",
+                          "format": "int32",
+                          "example": 34769948
+                        },
+                        "tipo_id": {
+                          "type": "string",
+                          "description": "Tipo de identificación personal.",
+                          "example": "DNI",
+                          "enum": [
+                            "DNI",
+                            "PA (Pasaporte)"
+                          ]
+                        },
+                        "cuit": {
+                          "type": "string",
+                          "description": "Número de CUIT del contratante en caso de no ser consumidor final.",
+                          "example": "23347699489"
+                        },
+                        "nombre": {
+                          "type": "string",
+                          "description": "Nombre de la persona contratante.",
+                          "example": "Juan"
+                        },
+                        "apellido": {
+                          "type": "string",
+                          "description": "Apellido de la persona contratante.",
+                          "example": "Perez"
+                        },
+                        "razon_social": {
+                          "type": "string",
+                          "description": "Razón Social del contratante en caso de no ser persona fisica.",
+                          "example": "21"
+                        },
+                        "condicion_iva": {
+                          "type": "string",
+                          "description": "Condición de IVA. Indica si es: INSCRIPTO, CONSUMIDOR FINAL, EXENTO ACTIVIDAD, INSCRIPTO (R.18/97), EXENTO DECRETO, MONOTRIBUTO, NO CATEGORIZADO, VUELCO SOCIOS, NO ALCANZADO",
+                          "example": "CF",
+                          "enum": [
+                            "IN",
+                            "CF",
+                            "EA",
+                            "IR",
+                            "ED",
+                            "MO",
+                            "NC",
+                            "0",
+                            "NA"
+                          ]
+                        },
+                        "localidad": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "matricula": {
+                          "type": "string",
+                          "description": "Identificación de un cliente existente dentro de Federación Patronal Seguros S.A.",
+                          "example": "1125554"
+                        },
+                        "nacionalidad": {
+                          "type": "string",
+                          "readOnly": true
+                        }
+                      }
+                    },
+                    "accesorios": {
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "codigo",
+                          "suma_asegurada"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "codigo": {
+                            "type": "integer",
+                            "description": "Codigo que representa el accesorio.",
+                            "format": "int32"
+                          },
+                          "suma_asegurada": {
+                            "type": "number",
+                            "description": "Monto a aplicar en el accesorio",
+                            "format": "double"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas, el token ingresado no es correcto",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso restringido, no se poseen los permisos para acceder al recurso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto interno, no se pudo realizar la operación. ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error inesperado al realizar la operación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "default": []
+          }
+        ],
+        "x-auth-type": "Application & Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2"
+          ],
+          "optional": false
+        }
+      }
+    },
+    "/cotizador-automotores/{numeroCotizacion}/fecha-desde": {
+      "put": {
+        "tags": [
+          "Cotización auto"
+        ],
+        "summary": "Permite actualizar la fecha desde de una cotización de automotores",
+        "operationId": "actualizarFechaDesde",
+        "parameters": [
+          {
+            "name": "numeroCotizacion",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "fecha_desde"
+                ],
+                "type": "object",
+                "properties": {
+                  "fecha_desde": {
+                    "type": "string",
+                    "description": "Fecha de la cotización (dd/MM/YYYY)."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operacion existosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "numero_cotizacion": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "fecha_desde": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "fecha_hasta": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "productor": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "descuento_comision": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "medio_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "plan_pago": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "provincia": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "razon_social": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "vehiculo": {
+                      "required": [
+                        "anio",
+                        "infoauto",
+                        "localidad_de_guarda",
+                        "tipo_vehiculo"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "infoauto": {
+                          "type": "string",
+                          "description": "Código de infoauto que representa la marca y el modelo del vehiculo a cotizar.",
+                          "example": "170641"
+                        },
+                        "anio": {
+                          "type": "string",
+                          "description": "Año modelo/fabricación del vehículo a cotizar.",
+                          "example": "2018"
+                        },
+                        "tipo_vehiculo": {
+                          "type": "integer",
+                          "description": "Código que representa el tipo de vehículo a cotizar. Los códigos válidos están disponibles en el microservicio vehículos.",
+                          "format": "int32",
+                          "example": 46
+                        },
+                        "alarma": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo a cotizar posee alarma",
+                          "example": true
+                        },
+                        "rastreador": {
+                          "type": "integer",
+                          "description": "Código que representa, en caso de existir, el rastreador satelital que posee el vehículo. Los códigos válidos están disponibles en el servicio rastreadores Vehiculares.",
+                          "format": "int32",
+                          "example": 46
+                        },
+                        "gnc": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo cuenta con equipo de GNC.",
+                          "example": false
+                        },
+                        "volcador": {
+                          "type": "boolean",
+                          "description": "Indica si el vehículo es volcador.",
+                          "example": false
+                        },
+                        "suma_asegurada": {
+                          "type": "number",
+                          "description": "Suma asegurada del vehículo a cubrir por las coberturas de casco.",
+                          "format": "double",
+                          "example": 1200000
+                        },
+                        "localidad_de_guarda": {
+                          "type": "integer",
+                          "description": "Código que representa la localidad de guarda del vehículo. Los códigos válidos están disponibles en el microservicio localidades.",
+                          "format": "int32",
+                          "example": 375
+                        }
+                      }
+                    },
+                    "coberturas": {
+                      "type": "object",
+                      "properties": {
+                        "rc_conosur": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "casco_conosur": {
+                          "type": "boolean"
+                        },
+                        "petroliferos_aeropuertos": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "grua": {
+                          "type": "boolean"
+                        },
+                        "taller_exclusivo": {
+                          "type": "boolean"
+                        },
+                        "interasegurado": {
+                          "type": "boolean"
+                        },
+                        "servicio_petrolero": {
+                          "type": "boolean"
+                        },
+                        "gastos_remediacion": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "planes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "codigo": {
+                                "type": "string"
+                              },
+                              "descripcion": {
+                                "type": "string"
+                              },
+                              "premio_automotor": {
+                                "type": "number",
+                                "description": "Premio generado y calculado de la cotización.",
+                                "format": "double",
+                                "example": 32544.5
+                              },
+                              "premio_total": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "prima_tarifa": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "in_exclusion": {
+                                "type": "string"
+                              },
+                              "monto_cuota_total": {
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "monto_pago_contado": {
+                                "type": "number",
+                                "format": "double"
+                              }
+                            }
+                          }
+                        },
+                        "franquicia": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "ajuste_automatico": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "rc_sublimites": {
+                          "type": "boolean"
+                        },
+                        "rc_ampliada": {
+                          "type": "integer",
+                          "format": "int32"
+                        }
+                      }
+                    },
+                    "contratante": {
+                      "required": [
+                        "condicion_iva"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "Número de identificación personal, ya sea para DNI, PA.",
+                          "format": "int32",
+                          "example": 34769948
+                        },
+                        "tipo_id": {
+                          "type": "string",
+                          "description": "Tipo de identificación personal.",
+                          "example": "DNI",
+                          "enum": [
+                            "DNI",
+                            "PA (Pasaporte)"
+                          ]
+                        },
+                        "cuit": {
+                          "type": "string",
+                          "description": "Número de CUIT del contratante en caso de no ser consumidor final.",
+                          "example": "23347699489"
+                        },
+                        "nombre": {
+                          "type": "string",
+                          "description": "Nombre de la persona contratante.",
+                          "example": "Juan"
+                        },
+                        "apellido": {
+                          "type": "string",
+                          "description": "Apellido de la persona contratante.",
+                          "example": "Perez"
+                        },
+                        "razon_social": {
+                          "type": "string",
+                          "description": "Razón Social del contratante en caso de no ser persona fisica.",
+                          "example": "21"
+                        },
+                        "condicion_iva": {
+                          "type": "string",
+                          "description": "Condición de IVA. Indica si es: INSCRIPTO, CONSUMIDOR FINAL, EXENTO ACTIVIDAD, INSCRIPTO (R.18/97), EXENTO DECRETO, MONOTRIBUTO, NO CATEGORIZADO, VUELCO SOCIOS, NO ALCANZADO",
+                          "example": "CF",
+                          "enum": [
+                            "IN",
+                            "CF",
+                            "EA",
+                            "IR",
+                            "ED",
+                            "MO",
+                            "NC",
+                            "0",
+                            "NA"
+                          ]
+                        },
+                        "localidad": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "matricula": {
+                          "type": "string",
+                          "description": "Identificación de un cliente existente dentro de Federación Patronal Seguros S.A.",
+                          "example": "1125554"
+                        },
+                        "nacionalidad": {
+                          "type": "string",
+                          "readOnly": true
+                        }
+                      }
+                    },
+                    "accesorios": {
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "codigo",
+                          "suma_asegurada"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "codigo": {
+                            "type": "integer",
+                            "description": "Codigo que representa el accesorio.",
+                            "format": "int32"
+                          },
+                          "suma_asegurada": {
+                            "type": "number",
+                            "description": "Monto a aplicar en el accesorio",
+                            "format": "double"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de entrada inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas, el token ingresado no es correcto",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso restringido, no se poseen los permisos para acceder al recurso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto interno, no se pudo realizar la operación. ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error inesperado al realizar la operación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    },
+                    "codigo_error": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "default": []
+          }
+        ],
+        "x-auth-type": "Application & Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2"
+          ],
+          "optional": false
+        }
+      }
+    }
+  }
+}
